@@ -1,0 +1,2547 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Microchip Technology Inc.</title>
+		<style>
+			body {font-family: "Lato", sans-serif;}
+/**********************Horizontal Tab CSS***********************************/
+			.HideSelectArrow::-ms-expand {
+				display: none;
+			}
+			.HideSelectArrow{
+				-webkit-appearance: none;
+				-moz-appearance: none;
+				border:none;
+				font-weight:bold;
+				font-size:16px;
+				background:none;
+				color:black;
+			}
+			.HideSelectArrowSTP{
+				width:80px;
+			}
+			.TextBox{
+				font-weight:bold;
+			}
+			/* Style the horizontal tab */
+			div.htab {
+				overflow: hidden;
+				border: 1px solid #ccc;
+				background-color: #f1f1f1;
+			}
+			/* Style the links inside the tab */
+			div.htab a {
+				float: left;
+				display: block;
+				color: black;
+				text-align: center;
+				padding: 5px 16px;
+				text-decoration: none;
+				transition: 0.3s;
+				font-size: 17px;
+			}
+			/* Change background color of links on hover */
+			div.htab a:hover {
+				background-color: #ddd;
+			}
+			/* Create an active/current tablink class */
+			div.htab a:focus, .active {
+				background-color: #ccc;
+			}
+			/* Style the horizontal tab content */
+			.htabcontent {
+				display: none;
+				padding: 2px 14px;
+				 -webkit-animation: fadeEffect 1s;
+				animation: fadeEffect 1s;
+			}
+			/* Fade in tabs */
+			@-webkit-keyframes fadeEffect {
+				from {opacity: 0;}
+				to {opacity: 1;}
+			}
+			@keyframes fadeEffect {
+				from {opacity: 0;}
+				to {opacity: 1;}
+			}
+/********************Vertical Tab CSS**************************/
+			/* Style the vertical tab */
+			div.vtab {
+				float: left;
+				border: 1px solid #ccc;
+				background-color: #f1f1f1;
+				width: 20%;
+				height: 500px;
+			}
+			/* Style the links inside the vertical tab */
+			div.vtab a {
+				display: block;
+				color: black;
+				padding: 8px 16px;
+				text-decoration: none;
+				transition: 0.3s;
+				font-size: 17px;
+			}
+			/* Change background color of links on hover */
+			div.vtab a:hover {
+				background-color: #ddd;
+			}
+			/* Create an active/current tablink class */
+			div.vtab a:focus, .active {
+				background-color: #ccc;
+			}
+			/* Style the vertical tab content */
+			.sub-tabcontent,.vtabcontent {
+				display: none;
+				overflow:auto;
+				float: left;
+				padding: 0px 12px;
+				border: 1px solid #ccc;
+				width: 75%;
+				border-left: none;
+				height: 500px;
+			}
+			.sub-tabcontent {
+				padding: 0px;
+			}
+			/* Tab Spaces */
+			tab0 {padding-left: 2em;}
+			tab1 {padding-left: 4em;}
+			tab2 {padding-left: 8em;}
+			tab3 {padding-left: 12em;}
+			/* Too Tip */
+			.tooltip {
+				position: relative;
+				display: inline-block;
+			}
+			.tooltip .tooltiptext {
+				visibility: hidden;
+				width: 400px;
+				background-color: #f1f1f1;
+				color: grey;
+				text-align: left;
+				border-radius: 6px;
+				padding: 5px 0;
+				position: absolute;
+				z-index: 1;
+				top: -5px;
+				left: 110%;
+				font-size:12px;
+				font-weight:bold;
+			}
+			.tooltip:hover .tooltiptext {
+				visibility: visible;
+				opacity: 1;
+			}
+			#overlayLoad {
+				position: fixed;
+				display: none;
+				width: 100%;
+				height: 100%;
+				top: 0;
+				left: 0;
+				right: 0;
+				bottom: 0;
+				background-color: transparent;
+				z-index: 2;
+				cursor: wait;
+			}
+			#overlayImport {
+				position: fixed;
+				display: none;
+				width: 100%;
+				height: 100%;
+				top: 0;
+				left: 0;
+				right: 0;
+				bottom: 0;
+				background-color: #f1f1f1;
+				z-index: 2;
+				cursor: wait;
+			}
+			#overlayExport {
+				position: fixed;
+				display: none;
+				width: 100%;
+				height: 100%;
+				top: 0;
+				left: 0;
+				right: 0;
+				bottom: 0;
+				background-color: #f1f1f1;
+				z-index: 2;
+				cursor: wait;
+			}
+			#overlayText {
+				position: absolute;
+				top: 50%;
+				left: 50%;
+				font-size: 20px;
+				background-color: transparent;
+				text-align: center;
+				z-index: 2;
+				color: red;
+				transform: translate(-50%,-50%);
+				-ms-transform: translate(-50%,-50%);
+			}
+/******************************************************************/
+		</style>
+	</head>
+	<body style="background-color:white;" onload="GetDevInfo('DevInfo')">
+             	<div style="float:left;width:45%">
+			<a href="https://www.microchip.com">
+				<img src="microchip_logo.png" alt="microchip.com" width="130px">
+			</a>
+		</div>
+		<div id="overlayLoad">
+			<div id="overlayText"></div>
+		</div>
+
+		<div id="DevInfo" style="float:left;width:55%">
+			<!--On page Load Gets Device information and displays as Heading -->
+		</div>
+
+		<div id="LoginDiv" style="clear:both">
+		<form id="UserAuth"  method = "post" action="/cgi-bin/config.py?CMD=SysAuth" onsubmit="return PopulateMainMenu(this, 'UserAuth')">
+				<br><br>
+				<b>Login : </b><br><br>
+				<input type="text" value="User Name " disabled style="border:0;color:black;background:transparent" size="10">
+				<input type="text" id="UserName" name="UserName">
+				<br>
+				<input type="text" value="Password " disabled style="border:0;color:black;background:transparent" size="10">
+				<input type="password" name="UserPasswd">
+				<br><br>
+				<input type="submit" name="submit" value="Submit">
+		</form>
+		</div>
+		<!-- Main Menu-->
+		<div id="MainMenu" class="htab" style="visibility:hidden">
+			<a href="javascript:void(0)" class="tablinks" onclick="OpenSubMenu(event, 'System')">System</a>
+			<a href="javascript:void(0)" id="dflt1" class="tablinks" onclick="OpenSubMenu(event, 'Switch')">Switch</a>
+			<a href="javascript:void(0)" class="tablinks" onclick="OpenSubMenu(event, 'Stats')">Stats</a>
+			<a href="javascript:void(0)" class="tablinks" onclick="OpenSubMenu(event, 'Debug')">Debug</a>
+		</div>
+		<!-- Horizontal Submenu Menu -->
+		<div id="System" class="htab htabcontent">
+			<a href="javascript:void(0)" class="sub-tablinks" onclick="OpenVMenu(event, 'Information')">Information</a>
+			<a href="javascript:void(0)" class="sub-tablinks" onclick="OpenVMenu(event, 'Configuration')">Configuration</a>
+		</div>
+
+		<div id="Switch" class="htab htabcontent">
+			<a href="javascript:void(0)" class="sub-tablinks" onclick="OpenVMenu(event, 'Global')">Global</a>
+			<a href="javascript:void(0)" id="dflt2" class="sub-tablinks" onclick="OpenVMenu(event, 'Port')">Port</a>
+			<a href="javascript:void(0)" class="sub-tablinks" onclick="OpenVMenu(event, 'VLAN')">VLAN</a>
+			<a href="javascript:void(0)" class="sub-tablinks" onclick="OpenVMenu(event, 'MAC')">MAC</a>
+			<a href="javascript:void(0)" class="sub-tablinks" onclick="OpenVMenu(event, 'STP')">STP</a>
+			<a href="javascript:void(0)" class="sub-tablinks" onclick="OpenVMenu(event, 'ACL')">ACL</a>
+			<a href="javascript:void(0)" class="sub-tablinks" onclick="OpenVMenu(event, 'QoS')">QoS</a>
+			<a href="javascript:void(0)" class="sub-tablinks" onclick="OpenVMenu(event, 'RateLimit')">Rate Limit</a>
+			<a href="javascript:void(0)" class="sub-tablinks" onclick="OpenVMenu(event, 'Mirroring')">Mirroring</a>
+		</div>
+
+		<div id="Stats" class="htab htabcontent">
+			<a href="javascript:void(0)" class="sub-tablinks" onclick="OpenVMenu(event, 'SwitchStats')">Switch</a>
+			<a href="javascript:void(0)" class="sub-tablinks" onclick="OpenVMenu(event, 'PortStats')">Port</a>
+		</div>
+
+		<div id="Debug" class="htab htabcontent">
+			<a href="javascript:void(0)" class="sub-tablinks" onclick="OpenVMenu(event, 'SwitchDebug')">Switch</a>
+			<a href="javascript:void(0)" class="sub-tablinks" onclick="OpenVMenu(event, 'PHY')">PHY</a>
+			<a href="javascript:void(0)" class="sub-tablinks" onclick="OpenVMenu(event, 'SystemOS')">System</a>
+		</div>
+
+		<!-- Vertical Menu of Sub Menu -->
+
+		<!-- ##################### System #################### -->
+		<!-- ********************* Information ******************** -->
+		<div id="Information" class="vtab sub-tabcontent">
+			<a href="javascript:void(0)" class="v-tablinks" onclick="OpenVForm(event,'HostInfo',true,false,false,' ',0,':','HostInfoForm')">Host Details</a>
+			<a href="javascript:void(0)" class="v-tablinks" onclick="OpenVForm(event,'DrvInfo',true,false,false,' ',0,':','DrvInfoForm')">Driver Details</a>
+			<a href="javascript:void(0)" class="v-tablinks" onclick="OpenVForm(event,'TgtInfo',true,false,false,' ',0,':','TgtInfoForm')">Device Details</a>
+		</div>
+
+		<!-- ********************* Configurations ******************** -->
+		<div id="Configuration" class="vtab sub-tabcontent">
+			<a href="javascript:void(0)" class="v-tablinks" onclick="OpenVForm(event,'IPSettings',false,true,false,'IpConfig',0,':','IPSettingsForm')">IP Settings</a>
+		</div>
+
+		<!-- ###################### Switch ########################## -->
+		<!-- ********************* Global ******************** -->
+		<div id="Global" class="vtab sub-tabcontent">
+			<a href="javascript:void(0)" class="v-tablinks" onclick="OpenVForm(event,'GVLANCfg',false,true,false,'ResVlanState',0,':','GVLANCfgForm')">VLAN</a>
+			<a href="javascript:void(0)" class="v-tablinks" onclick="OpenVForm(event,'GMTUCfg',false,true,true,'ResMtuSize',0,':','GMTUCfgForm')">MTU</a>
+			<a href="javascript:void(0)" class="v-tablinks" onclick="OpenVForm(event,'GJUMBOCfg',false,true,false,'JumboFrameSupport',0,':','GJUMBOCfgForm')">Jumbo Frame</a>
+		</div>
+		<!-- ********************* Port ******************** -->
+		<div id="Port" class="vtab sub-tabcontent">
+			<a href="javascript:void(0)" id="dflt3" class="v-tablinks" onclick="OpenVForm(event,'PortCfg',false,true,false,'SetGetPort',0,':','PortCfgForm')">Port Configurations</a>
+		</div>
+		<!-- ********************* VLAN ******************** -->
+		<div id="VLAN" class="vtab sub-tabcontent">
+			<a href="javascript:void(0)" class="v-tablinks" onclick="OpenVForm(event,'VIDCfg',false,false,false,' ',0,':',' ')">VLAN Table</a>
+			<a href="javascript:void(0)" class="v-tablinks" onclick="OpenVForm(event,'PVIDCfg',false,true,false,'SetGetPVID',0,':','PVIDCfgForm')">Port Settings</a>
+		</div>
+
+		<!-- ********************* MAC ******************** -->
+		<div id="MAC" class="vtab sub-tabcontent">
+			<a href="javascript:void(0)" class="v-tablinks" onclick="OpenVForm(event,'MACTable',false,true,true,'ResMacTable',0,':','MACTableForm')">MAC Table</a>
+			<a href="javascript:void(0)" class="v-tablinks" onclick="OpenVForm(event,'StaticMAC',false,false,false,'',0,':','')">Static MAC Configurations</a>
+		</div>
+
+		<!-- ********************* STP ******************** -->
+		<div id="STP" class="vtab sub-tabcontent">
+			<a href="javascript:void(0)" class="v-tablinks" onclick="OpenVForm(event,'STPCfg',false,true,false,'STPConfig',0,':','STPCfgForm')">STP Configurations</a>
+			<a href="javascript:void(0)" class="v-tablinks" onclick="OpenVForm(event,'STPPortCfg',false,true,false,'STPPortConfig',0,':','STPPortCfgForm')">STP Port Configurations</a>
+		</div>
+
+		<!-- ********************* ACL ******************** -->
+		<div id="ACL" class="vtab sub-tabcontent">
+			<a href="javascript:void(0)" class="v-tablinks" onclick="OpenVForm(event,'ACLRuleCfg',false,true,true,'ResACLRuleTbl',0,':','ACLRuleCfgForm')">ACL Configurations</a>
+			<!-- #NEEDED ?
+			<a href="javascript:void(0)" class="v-tablinks" onclick="OpenVForm(event,'ACLRuleActionCfg',false,true,false,'ResACLRuleActionTbl',0,'#','ACLRuleActionCfgForm')">ACL Action Configurations</a>
+			<a href="javascript:void(0)" class="v-tablinks" onclick="OpenVForm(event,'ACLRuleMapCfg',false,true,false,'ResACLMapTbl',0,'#','ACLRuleMapCfgForm')">ACL Rule Mapping</a>
+			-->
+		</div>
+
+		<!-- ********************* QoS ******************** -->
+		<div id="QoS" class="vtab sub-tabcontent">
+			<a href="javascript:void(0)" class="v-tablinks" onclick="OpenVForm(event,'QueueConfig',false,true,false,'QueueCfg',0,':','QueueConfigForm')">Transmit Queue Configurations</a>
+			<a href="javascript:void(0)" class="v-tablinks" onclick="OpenVForm(event,'QueueMapConfig',false,false,false,' ',0,':',' ')">QoS Configurations</a>
+		</div>
+
+		<!-- ********************* Mirroring ******************** -->
+		<div id="Mirroring" class="vtab sub-tabcontent">
+			<a href="javascript:void(0)" class="v-tablinks" onclick="OpenVForm(event,'MirrorConfig',false,false,false,' ',0,':',' ')">Port Mirroring</a>
+		</div>
+
+		<!-- ********************* Rate Limit  ******************** -->
+		<div id="RateLimit" class="vtab sub-tabcontent">
+			<a href="javascript:void(0)" class="v-tablinks" onclick="OpenVForm(event,'InRateLimitConfig',false,true,false,'InRateLimitCfg',0,':','InRateLimitCfgForm')">Ingress Rate Limit</a>
+			<a href="javascript:void(0)" class="v-tablinks" onclick="OpenVForm(event,'EgRateLimitConfig',false,true,false,'EgRateLimitCfg',0,':','EgRateLimitCfgForm')">Egress Rate Limit</a>
+		</div>
+
+		<!-- ###################### Stats ########################## -->
+		<!-- ********************* Switch ******************** -->
+		<div id="SwitchStats" class="vtab sub-tabcontent">
+			<a href="javascript:void(0)" class="v-tablinks" onclick="OpenVForm(event,'SWStats',false,true,true,'ResStatOut',0,':','SWStatsForm')">Switch Statistics</a>
+		</div>
+		<!-- ********************* Port ******************** -->
+		<div id="PortStats" class="vtab sub-tabcontent">
+			<a href="javascript:void(0)" class="v-tablinks" onclick="OpenVForm(event,'PerPortStats',false,true,true,'ResPortStatOut',0,':','PerPortStatsForm')">Port Statistics</a>
+		</div>
+
+		<!-- ###################### Debug ########################## -->
+		<!-- ********************* Switch ******************** -->
+		<div id="SwitchDebug" class="vtab sub-tabcontent">
+			<a href="javascript:void(0)" class="v-tablinks" onclick="OpenVForm(event,'SWDebug',false,false,false,' ',0,':',' ')">Switch Reg Access</a>
+		</div>
+		<!-- ********************* Phy ******************** -->
+		<div id="PHY" class="vtab sub-tabcontent">
+			<a href="javascript:void(0)" class="v-tablinks" onclick="OpenVForm(event,'PHYDebug',false,false,false,' ',0,':',' ')">PHY Reg Access</a>
+		</div>
+		<!-- ********************* System ******************** -->
+		<div id="SystemOS" class="vtab sub-tabcontent">
+			<a href="javascript:void(0)" class="v-tablinks" onclick="OpenVForm(event,'SystemDebug',false,false,false,' ',0,':',' ')">System Shell Access</a>
+			<a href="javascript:void(0)" class="v-tablinks" onclick="OpenVForm(event,'ActivityLog',false,true,true,'ResActyLog',0,':','ActivityLogForm')">Activity Log</a>
+			<a href="javascript:void(0)" class="v-tablinks" onclick="OpenVForm(event,'SaveConfig',false,false,false,' ',0,':',' ')">Export Config</a>
+			<a href="javascript:void(0)" class="v-tablinks" onclick="OpenVForm(event,'ApplyConfig',false,false,false,' ',0,':',' ')">Import Config</a>
+		</div>
+		<!-- ######################################################## -->
+		<!-- ######################## Form Configurations ############################# -->
+		<!-- Host Details Form -->
+		<div id="HostInfo" class="vtabcontent">
+			<form id="HostInfoForm" method = "post" action="/cgi-bin/config.py?CMD=HostInfo" onclick="return ResponseFill(this,'ResHostInfoOut')">
+				<br><b>Host System Information :<b> <br><br>
+				<textarea id="ResHostInfoOut" rows="12" cols="40" readonly class="TextBox"></textarea>
+			</form>
+		</div>
+
+		<!-- Driver Details Form -->
+		<div id="DrvInfo" class="vtabcontent">
+			<form id="DrvInfoForm"method="post" action="/cgi-bin/config.py?CMD=DrvInfo" onclick="return ResponseFill(this,'ResDrvInfoOut')">
+				<br><b>Driver Information :</b> <br><br>
+				<textarea id="ResDrvInfoOut" rows="18" cols="40" readonly class="TextBox"></textarea>
+			</form>
+		</div>
+
+		<!-- Device Details Form -->
+		<div id="TgtInfo" class="vtabcontent">
+			<form id="TgtInfoForm" method="post" action="/cgi-bin/config.py?CMD=TgtInfo" onclick="return ResponseFill(this,'ResTgtInfoOut')">
+				<br><b>Target Information :</b> <br><br>
+				<textarea id="ResTgtInfoOut" rows="8" cols="25" readonly class="TextBox"></textarea>
+			</form>
+		</div>
+
+		<!-- IP Settings Limit Form -->
+		<div id="IPSettings" class="vtabcontent">
+			<form id="IPSettingsForm" method="post" action="/cgi-bin/config.py?CMD=IPSettings" onsubmit="return ResponseFillMultiple(this,'IpConfig',0,':')">
+				<br><b>IP Settings :</b>
+				<br>
+				<input type="text" value="IP Address" readonly size="12" disabled style="visibility:hidden;" class="HideSelectArrow">
+				<input type="radio" name="IpSetType" value="dhcp"  onchange="DisableClassId('IpConfig',true,'TypeClass',false,' ',0)"> dhcp
+				<input type="radio" name="IpSetType" value="manual" onchange="DisableClassId('IpConfig',false,'TypeClass',false,' ',0)" > manual
+				<br>
+				<input type="text" value="IP Address " readonly size="12" disabled class="HideSelectArrow">
+				<input id="IpAddrOut" type="text" name="IpAddr" class="IpConfig" value="0.0.0.0" disabled>
+				<br>
+				<input type="text" value="Subnet Mask " readonly size="12" disabled class="HideSelectArrow">
+				<input id="SNMaskOut" type="text" name="SNMask" class="IpConfig" value="0.0.0.0" disabled> 
+				<br>
+				<input type="text" value="Default Gateway " readonly  size="12" disabled class="HideSelectArrow">
+				<input id="DGAddrOut" type="text" name="DGAddr" class="IpConfig" value="0.0.0.0" disabled>
+				<br><br><br>
+				<button name="Apply" value="Apply" onclick="return submitFormInput('IPSettingsForm','IPSettingsCfgHidden','Set','None','IpConfig','TypeClass',0,':')">Apply</button>
+				<input type="text" id="IPSettingsCfgHidden" name="IPSettingsCfg" value="None" style="display:none;">
+			</form>
+		</div>
+
+		<!-- VLAN Form -->
+		<div id="GVLANCfg" class="vtabcontent">
+			<form id="GVLANCfgForm" method="post" action="/cgi-bin/config.py?CMD=GVLANCfg" onsubmit="return ResponseFillMultiple(this,'ResVlanState',0,':')">
+				<br><b>Switch VLAN Support :</b><br><br>
+				<select name="VlanState" class="ResVlanState">
+					<option value="1">Enable</option>
+					<option value="0">Disable</option>
+				</select>
+				<br><br>
+				<input type="text" id="VLANCfgHidden" name="VlanCfg" value="None" style="display:none;">
+				<button onclick="return submitFormInput('GVLANCfgForm','VLANCfgHidden','Set','None','ResVlanState','TypeClass',0,':')">Apply</button>
+			</form>
+		</div>
+
+		<!-- MTU Form -->
+		<div id="GMTUCfg" class="vtabcontent">
+			<form id="GMTUCfgForm" method="post" action="/cgi-bin/config.py?CMD=GMTUInfo" onsubmit="return ResponseFill(this,'ResMtuSize')">
+				<br><b>MTU Size :</b><br><br>
+				<input id="ResMtuSize" type="text" name="MTUSize">
+				<br><br>
+				<input type="text" id="MTUCfgHidden" name="MTUCfg" value="None" style="display:none;">
+				<button onclick="return submitFormInput('GMTUCfgForm','MTUCfgHidden','Set','None','ResMtuSize','TypeId',0,':')">Apply</button>
+			</form>
+		</div>
+
+		<!-- Jumbo Frame Form -->
+		<div id="GJUMBOCfg" class="vtabcontent">
+			<form id="GJUMBOCfgForm" method="post" action="/cgi-bin/config.py?CMD=GJumboSupport" onsubmit="return ResponseFillMultiple(this,'JumboFrameSupport',0,':')">
+				<br><b>Jumbo Frame Support :</b><br><br>
+				<select name="JumboFrame" class="JumboFrameSupport">
+					<option value="1">Enable</option>
+					<option value="0">Disable</option>
+				</select>
+				<br><br>
+				<input type="text" id="GJUMBOCfgHidden" name="JumboCfg" value="None" style="display:none;">
+				<button onclick="return submitFormInput('GJUMBOCfgForm','GJUMBOCfgHidden','Set','None','JumboFrameSupport','TypeClass',0,':')">Apply</button>
+			</form>
+		</div>
+
+		<!-- Port Configurations Form -->
+		<div id="PortCfg" class="vtabcontent">
+			<form id="PortCfgForm" method="post" action="/cgi-bin/config.py?CMD=PortCfg" onsubmit="return ResponseFillMultiple(this,'SetGetPort',0,':')">
+				<!-- Will be populated on load Based on Number of Ports -->
+				<!-- Port Link Speed Status -->
+				<br><input type="radio" style="visibility:hidden;">Ports<tab0><select class="HideSelectArrow" style="width:160px;" disabled><option value="Speed">Speed</option></select><input type="text" class="HideSelectArrow" style="width:160px;" value="Link Status" disabled>
+				<br><br>
+			</form>
+		</div>
+
+		<!-- VLAN Table Form -->
+		<div id="VIDCfg" class="vtabcontent">
+			<form id="VIDCfgForm" method="post" action="/cgi-bin/config.py?CMD=VlanInfo" onsubmit="return PopulateVlanTable('VIDCfgFormInner')">
+				<!-- Will be populated on load -->
+				<!-- VID FID Port MemberShip Add/Delete -->
+				<!-- <div id="VIDCfgFormInner"> -->
+					<!-- Will be Cleared and Re-populated on Add/Delete-->
+				<!-- <div> -->
+			</form>
+		</div>
+
+		<!-- Port Settings Form -->
+		<div id="PVIDCfg" class="vtabcontent">
+			<form id="PVIDCfgForm" method="post" action="/cgi-bin/config.py?CMD=PVIDCfg" onsubmit="return ResponseFillMultiple(this,'SetGetPVID',0,':')">
+				<!-- Will be populated on load based on Number of Ports -->
+				<!-- Port PVID IngressFilter IngressFrameAccType Priority   -->
+				<br>
+				<input type="radio" style="visibility:hidden;">Ports<tab0>
+				<input type="text" class="HideSelectArrow" style="width:160px;" value="PVID" disabled>
+				<select class="HideSelectArrow" style="width:165px;" disabled><option>Ingress Filter</option></select>
+				<select class="HideSelectArrow" style="width:205px;"disabled><option>Ingress Frame Action</option></select><br><br>
+				<!--
+				<select class="HideSelectArrow" style="width:160px;" disabled><option>Priority</option></select><br><br>
+				-->
+			</form>
+		</div>
+
+		<!-- MAC Table Form -->
+		<div id="MACTable" class="vtabcontent">
+			<form id="MACTableForm" method="post" action="/cgi-bin/config.py?CMD=DynamicMACInfo" onsubmit="return ResponseFill(this,'ResMacTable')">
+				<input type="radio" name="TblType" value="dynamic_table" checked onchange="return submitFormInput('MACTableForm','MACTableHiddenInput','Refresh','None','ResMacTable','TypeId',0,':')">Dynamic
+				<input type="radio" name="TblType" value="static_table" onchange="return submitFormInput('MACTableForm','MACTableHiddenInput','Refresh','None','ResMacTable','TypeId',0,':')">Static
+				<button name="Refresh" value="Refresh" onclick="return submitFormInput('MACTableForm','MACTableHiddenInput','Refresh','None','ResMacTable','TypeId',0,':')">Refresh</button>
+				<button name="Clear" value="Clear" onclick="return submitFormInput('MACTableForm','MACTableHiddenInput','Clear','None','ResMacTable','TypeId',0,':')">Clear</button>
+				<input type="hidden" id="MACTableHiddenInput" name="FormCmd" value="None">
+				<br>
+				<textarea id="ResMacTable" rows="15" cols="75" readonly></textarea>
+			</form>
+		</div>
+
+		<!-- Static MAC Configurations Form -->
+		<div id="StaticMAC" class="vtabcontent">
+			<form id="StaticMACForm" method="post" action="/cgi-bin/config.py?CMD=StaticMacInfo" onsubmit="return PopulateStaticMacTable(this,'StaticMacFormInner')">
+
+				<!-- Will be populated on load -->
+				<br>
+				<input type="text" class="HideSelectArrow" style="width:160px;" value="Index"><tab0>
+				<input type="text" class="HideSelectArrow" style="width:160px;" value="Mac Address"><tab0>
+				<input type="text" class="HideSelectArrow" style="width:160px;" value="Port Membership"><br><br>
+				<!-- Index MAC Port MemberShip Add/Delete -->
+				<!-- <div id="StaticMACFormInner"> -->
+					<!-- Will be Cleared and Re-populated on Add/Delete/Clear-->
+				<!-- <div> -->
+			</form>
+		</div>
+
+		<!-- STP Configurations Form -->
+		<div id="STPCfg" class="vtabcontent">
+			<form id="STPCfgForm" method="post" action="/cgi-bin/config.py?CMD=STPCfg" onsubmit="return ResponseFillMultiple(this,'STPConfig',0,':')">
+				<br>
+				STP Configurations:
+				<br><br>
+				<input type="text" value="STP Protocol Type" readonly disabled class="HideSelectArrow" style="width:250px;"><tab0>
+				<select name="STPVersion" class="STPConfig" style="width:160px">
+				<option value="0">STP</option>
+				<option value="2">RSTP</option>
+				<select>
+				<br>
+				<input type="text" value="Bridge Priority" readonly disabled class="HideSelectArrow" style="width:250px;"><tab0>
+				<select id="STPPrioOut" name="STPPrio" class="STPConfig" style="width:160px">
+				<option value="0">0</option><option value="4096">4096</option><option value="8192">8192</option>
+				<option value="12288">12288</option><option value="16384">16384</option><option value="20480">20480</option>
+				<option value="24576">24576</option><option value="28672">28672</option><option value="32768">32768</option>
+				<option value="36864">36864</option><option value="40960">40960</option><option value="45056">45056</option>
+				<option value="49152">49152</option><option value="53248">53248</option><option value="57344">57344</option>
+				</select>
+				<br>
+				<input type="text" value="Bridge Max Age (secs)" readonly disabled class="HideSelectArrow" style="width:250px;"><tab0>
+				<input id="STPMaxAgeOut" type="text" name="STPMaxAge" class="STPConfig" value="0" size="10" style="width:150px">
+				<br>
+				<input type="text" value="Bridge Hello Time (secs)" readonly disabled class="HideSelectArrow" style="width:250px;"><tab0>
+				<input id="STPHTimeOut" type="text" name="STPHTime" class="STPConfig" value="0" size="10" disabled style="width:150px">
+				<br>
+				<input type="text" value="Bridge Forward Delay (secs)" readonly disabled class="HideSelectArrow" style="width:250px;"><tab0>
+				<input id="STPFwDelayOut" type="text" name="STPFwDelay" class="STPConfig" value="0" size="10" style="width:150px">
+				<br>
+				<input type="text" value="Bridge Transmit hold count" readonly disabled class="HideSelectArrow" style="width:250px;"><tab0>
+				<input id="STPTxHoldCountOut" type="text" name="STPTxHoldCount" class="STPConfig" value="0" size="10" style="width:150px">
+				<br>
+				<br>
+				<button name="Apply" value="Apply" onclick="return submitFormInput('STPCfgForm','STPCfgHidden','Set','None','STPConfig','TypeClass',0,':')">Apply</button>
+				<input type="text" id="STPCfgHidden" name="STPCfg" value="None" style="display:none;">
+				<br><br>
+				STP Status:
+				<br><br>
+				<button name="Refresh" value="Refresh" onclick="return submitFormInput('STPCfgForm','STPCfgHidden','Get','Refresh','STPConfig','TypeClass',0,':')">Refresh</button>
+				<br>
+				<br>
+				<textarea id="ResSTPInfo" rows="12" cols="85" class="STPConfig" style="font-weight:bold;"readonly></textarea>
+			</form>
+		</div>
+
+		<!-- STP Port Configurations Form -->
+		<div id="STPPortCfg" class="vtabcontent">
+			<form id="STPPortCfgForm" method="post" action="/cgi-bin/config.py?CMD=STPPortCfg" onsubmit="return ResponseFillMultiple(this,'STPPortConfig',0,':')">
+				<br>
+				STP Port Configurations:
+				<br><br>
+				<input type="radio" style="visibility:hidden;">Ports<tab0><select class="HideSelectArrow" disabled style="width:80px"><option value="State">State</option></select><select class="HideSelectArrow" disabled style="width:80px"><option value="Priority">Priority</option></select><input type="text" class="HideSelectArrow" value="Path Cost" style="width:105px" disabled><select class="HideSelectArrow" disabled style="width:80px"><option value="Edge">Edge</option></select><select class="HideSelectArrow" disabled style="width:100px"><option value="Auto Edge">Auto Edge</option></select><input type="text" class="HideSelectArrow" value="Edge Path Cost" disabled style="width:135px"><select class="HideSelectArrow" disabled style="width:80px"><option value="Mcheck">Mcheck</option></select><select class="HideSelectArrow" disabled style="width:80px"><option value="P2P">P2P</option></select>
+				<br><br>
+			</form>
+		</div>
+
+		<!-- ACL Configurations Form -->
+		<div id="ACLRuleCfg" class="vtabcontent">
+			<form id="ACLRuleCfgForm" method="post" action="/cgi-bin/config.py?CMD=ACLRuleCfg" onsubmit="return ResponseFill(this,'ResACLRuleTbl')">
+				<b>Rule Management:</b><br>
+				<br>
+				<div id="ACLRulePort">
+				</div>
+				<input type="radio" checked name="ACLRuleType" value="1" onchange="return DisplayACLClass('ACLL2','ACLL3','ACLL4','ACLRuleCfgEnable')"> L2
+				<input type="radio" name="ACLRuleType" value="2" onchange="return DisplayACLClass('ACLL3','ACLL2','ACLL4','ACLRuleCfgEnable')"> L3
+				<input type="radio" name="ACLRuleType" value="3" onchange="return DisplayACLClass('ACLL4','ACLL3','ACLL2','ACLRuleCfgEnable')"> L4
+				<br>
+				<input type="text" value="ACL Support" readonly style="border:0;" size="20" disabled>
+				<select name="ACLEnable" id="ACLEnable" style="width:150px">
+				<option value="0">Disable</option>
+				<option selected value="1">Enable</option>
+				</select>
+				<br>
+				<input type="text" value="ACL Index" readonly style="border:0;" size="20" disabled>
+				<input id="ACLRuleCfgIndex" type="text" name="ACLIndex" value="0" size="10" style="width:150px;">
+				<br>
+				<div id="ACLL2">
+				<input type="text" value="MAC Addr" readonly style="border:0;" size="20" disabled>
+				<input id="ACLRuleCfgMACAddr" class="L2" type="text" name="RuleMacAddr" value="0" size="10" style="width:150px;">
+				<br>
+				<input type="text" value="Ether Type" readonly style="border:0;" size="20" disabled>
+				<input id="ACLRuleCfgEtherType" class="L2" title="Input should be in HEX!" type="text" name="RuleEtherType" value="0" size="10" style="width:150px;">
+				<br>
+				</div>
+				<div id="ACLL3" style="display:none">
+				<input type="text" value="IP Addr" readonly style="border:0;" size="20" disabled>
+				<input id="ACLRuleCfgIPAddr" class="L3" type="text" name="RuleIPAddr" value="0" size="10" style="width:150px;">
+				<br>
+				<input type="text" value="Net Mask" readonly style="border:0;" size="20" disabled>
+				<input id="ACLRuleCfgNetMask" class="L3"  type="text" name="RuleNetMask" value="0" size="10" style="width:150px;">
+				<br>
+				</div>
+				<div id="ACLL4" style="display:none">
+				<input type="text" value="Port Mode" readonly style="border:0;" size="20" disabled>
+				<select id="ACLRuleCfgPortMode" class="L4" name="RulePortMode" style="width:150px" class="ACLPort">
+				<option selected value="1">Either</option>
+				<option value="2">In Range</option>
+				<option value="3">Out Of Range</option>
+				<option value="0">Disabled</option>
+				</select>
+				<br>
+				<input type="text" value="Min Port" readonly style="border:0;"  size="20" disabled>
+				<input id="ACLRuleCfgMinPort" class="L4" title="Input Should be in HEX!" type="text" name="RuleMinPort"  value="0" size="10" style="width:150px;" class="ACLPort">
+				<br>
+				<input type="text" value="Max Port" readonly style="border:0;" size="20" disabled>
+				<input id="ACLRuleCfgMaxPort" class="L4"  title="Input Should be in HEX!" type="text" name="RuleMaxPort"  value="0" size="10" style="width:150px;" class="ACLPort">
+				<br>
+				<input type="text" value="TCP Sequence Number" readonly style="border:0;" size="20" disabled>
+				<input id="ACLRuleCfgTCPSeqNum" class="L4" title="Input Should be in HEX!" type="text" name="RuleTCPSeqNum"  value="0" size="10" style="width:150px;" class="ACLTCPSeq">
+				<br>
+				<input type="text" value="Flag Enable" readonly style="border:0;" size="20" disabled>
+				<select id="ACLRuleCfgFlagEnable" name="RuleFlagEnable" style="width:150px" onchange="DisableClassId('ACLFlagCfg',true,'TypeClass',true,'ACLRuleCfgFlagEnable',1)" class="ACLTCPSeq L4">
+				<option selected value="0">Disable</option>
+				<option value="1">Enable</option>
+				</select>
+				<br>
+				<input type="text" value="Flag Value" readonly style="border:0;" size="20" disabled>
+				<input id="ACLRuleCfgFlagValue" title="Input Should be in HEX!" type="text" name="RuleFlagValue"  class="ACLFlagCfg" value="0" size="10" disabled style="width:150px;" class="ACLTCPSeq L4">
+				<br>
+				<input type="text" value="Flag mask" readonly style="border:0;"  size="20" disabled>
+				<input id="ACLRuleCfgFlagMask" title="Input Should be in HEX!" type="text" name="RuleFlagMask" class="ACLFlagCfg" value="0" size="10" disabled style="width:150px;" class="ACLTCPSeq L4">
+				<br>
+				<input type="text" value="IP Protocol" readonly style="border:0;"  size="20" disabled>
+				<input id="ACLRuleCfgIPProtocol" class="L4" title="Input Should be in HEX!" type="text" name="RuleIPProtocol" value="0" size="10" disabled style="width:150px;">
+				<br>
+				</div>
+				<input type="text" value="Match Criteria"  readonly style="border:0;" size="20" disabled>
+				<!--
+				<select id="ACLRuleCfgEnable" name="RuleEnable" style="width:150px" onchange="DisableClassId('ACLRuleCfgIPProtocol',true,'TypeId',true,'ACLRuleCfgEnable',0)">
+				-->
+				<select id="ACLRuleCfgEnable" class="L2 L3 L4" name="RuleEnable" style="width:150px" onchange="DisableSelection('ACLRuleCfgEnable','ACLRuleType')">
+				</select>
+				<br>
+				<input type="text" value="Match To"  readonly style="border:0;" size="20" disabled>
+				<select id="ACLRuleCfgSrc" class="L2 L3 L4" name="RuleSrc" style="width:150px">
+				<option selected value="1">Source</option>
+				<option value="0">Destination</option>
+				<select>
+				<br>
+				<input type="text" value="Action Type"  readonly style="border:0;" size="20" disabled>
+				<select id="ACLRuleCfgEqual" class="L2 L3 L4" name="RuleEqual" style="width:150px">
+				<option selected value="1">Deny</option>
+				<option value="0">Permit</option>
+				</select>
+				<br><br>
+				<input type="text" id="ACLRuleCfgHidden" name="ACLRuleCfg" value="None" style="display:none;">
+				<input type="text" id="ACLRuleCfgLoad" name="ACLRuleCfgLoad" value="None" style="display:none;">
+				<button name="Add" value="Add" onclick="return submitFormInput('ACLRuleCfgForm','ACLRuleCfgHidden','Add','None','ResACLRuleTbl','TypeId',0,':')">Add</button>
+				<button name="Delete" value="Delete" onclick="return submitFormInput('ACLRuleCfgForm','ACLRuleCfgHidden','Delete','None','ResACLRuleTbl','TypeId',0,':')">Delete</button>
+				<br><br>
+				<b>Rule Config Table:</b>
+				<br>
+				<button name="Refresh" value="Refresh" onclick="return submitFormInput('ACLRuleCfgForm','ACLRuleCfgHidden','Refresh','None','ResACLRuleTbl','TypeId',0,':')">Refresh</button>
+				<br>
+				<textarea id="ResACLRuleTbl" rows="15" cols="145" style="font-size:10px;font-weight:bold;" readonly></textarea>
+				<br>
+			</form>
+		</div>
+		<!-- #NEEDED ?
+		<div id="ACLRuleActionCfg" class="vtabcontent">
+			<form id="ACLRuleActionCfgForm" method="post" action="/cgi-bin/config.py?CMD=ACLRuleActionConfig" onsubmit="return submitFormInput('ACLRuleActionCfgForm','ACLActionCfgHidden','Refresh','None','ResACLRuleActionTbl','TypeClass',0,'#')">
+				<div id="DIVACLRuleActionRuleTable" style="float:left;width:45%">
+					<b>ACL Rule Action Configurations:</b>
+					<br>
+					<div id="ACLRuleActionPort">
+					</div>
+					<input type="text" value="Index" readonly style="border:0;" size="12" disabled>
+					<input id="ACLRuleActionCfgIndex" type="text" name="ACLIndex" value="0" size="10">
+					<br>
+					<input type="text" value="Mode Mapping"  readonly style="border:0;" size="12" disabled>
+					<select id="ACLRuleActionCfgMapMode" name="ActionMapMode" style="width:150px">
+					<option selected value="0">Disable</option>
+					<option value="1">OR</option>
+					<option value="2">AND</option>
+					<option value="3">REPLACE</option>
+					<select>
+					<br>
+					<input type="text" value="Priority Mode"  readonly style="border:0;" size="12" disabled>
+					<select id="ACLRuleActionCfgPriorityMode" name="ActionPriorityMode" style="width:150px">
+					<option selected value="0">Disable</option>
+					<option value="1">Higher</option>
+					<option value="2">Lower</option>
+					<option value="3">Replace</option>
+					<select>
+					<br>
+					<input type="text" value="Priority"  readonly style="border:0;" size="12" disabled>
+					<select id="ACLRuleActionCfgPriority" name="ActionPriority" style="width:150px">
+					<option selected value="0">0</option>
+					<option value="1">1</option>
+					<option value="2">2</option>
+					<option value="3">3</option>
+					<select>
+					<br>
+					<input type="text" value="VLAN Priority Replace"  readonly style="border:0;" size="12" disabled>
+					<select id="ACLRuleActionCfgVLANPriorityReplace" name="ActionVLANPriorityReplace" style="width:150px">
+					<option selected value="0">Disable</option>
+					<option value="1">Enable</option>
+					<select>
+					<br>
+					<input type="text" value="VLAN Priority"  readonly style="border:0;" size="12" disabled>
+					<select id="ACLRuleActionCfgVLANPriority" name="ActionVLANPriority" style="width:150px">
+					<option selected value="0">0</option>
+					<option value="1">1</option>
+					<option value="2">2</option>
+					<option value="3">3</option>
+					<select>
+					<br>
+				</div>
+				<div style="float:left;">
+					<b>Rule Action Table</b>
+					<br>
+					<button name="Refresh" value="Refresh" onclick="return submitFormInput('ACLRuleActionCfgForm','ACLActionCfgHidden', 'Refresh','None','ResACLRuleActionTbl','TypeClass',0,\'#\')">Refresh</button>
+					<br>
+					<textarea id="ResACLRuleActionTbl" rows="16" cols="80" class="ResACLRuleActionTbl" style="font-size:10px" readonly></textarea>
+					<br>
+				</div>
+				<div style="clear:both;">
+					<b>Rule Config Table:</b>
+					<br>
+					<textarea id="ResACLRuleCfg" rows="10" cols="140" class="ResACLRuleActionTbl" style="font-size:10px" readonly></textarea>
+					<br>
+				</div>
+				<input type="text" id="ACLActionCfgHidden" name="ACLAction" value="None" style="display:none;">
+				<input type="text" id="ACLActionMembers" value="0" name="ACLPortMembers" style="display:none;">
+			</form>
+		</div>
+		-->
+		<!-- #NEEDED ?
+		<div id="ACLRuleMapCfg" class="vtabcontent">
+			<form id="ACLRuleMapCfgForm" method="post" action="/cgi-bin/config.py?CMD=ACLRuleMapCfg" onsubmit="return ResponseFillMultiple(this,'ResACLMapTbl',0,'#')">
+				<div style="float:left;width:50%;">
+					<b>ACL Rule Map Configurations:</b>
+					<br>
+					<div id="ACLRuleMapPort">
+					</div>
+					<input type="text" value="ACL Support" readonly style="border:0;" size="20" disabled>
+					<select name="ACLEnable" style="width:150px">
+					<option selected value="0">Disable</option>
+					<option value="1">Enable</option>
+					<select>
+					<br>
+					<input type="text" value="Index" readonly style="border:0;" size="20" disabled>
+					<input type="text" name="ACLRuleIndex" value="0" size="10">
+					<br>
+					<input type="text" value="Action Index" readonly style="border:0;" size="20" disabled>
+					<input type="text" name="ACLActionIndex" value="0" size="10">
+					<br>
+					<input type="text" value="Rule Map" readonly style="border:0;" size="20" disabled>
+					<input type="text" name="ACLRuleMap" value="0" size="10">
+					<br>
+					<input type="button" id="ACLRuleMapAdd" value="Add" onclick="return submitFormInput('ACLRuleMapCfgForm','ACLMapCfgHidden','Add','None','ResACLMapTbl','TypeClass',0,'#')">
+					<input type="button" id="ACLRuleMapDelete" value="Delete" onclick="return submitFormInput('ACLRuleMapCfgForm','ACLMapCfgHidden','Delete','None','ResACLMapTbl','TypeClass',0,'#')">
+					<br>
+				</div>
+				<div style="float:left;">
+					<b>ACL Rule Map Table:</b>
+					<br>
+					<button name="Refresh" value="Refresh" onclick="return submitFormInput('ACLRuleMapCfgForm','ACLMapCfgHidden','Refresh','None','ResACLMapTbl','TypeClass',0,'#')">Refresh</button>
+					<br>
+					<textarea id="ResACLRuleMapTbl" rows="10" cols="60" class="ResACLMapTbl" style="font-size:10px" readonly></textarea>
+				</div>
+				<div style="float:left;">
+					<b>ACL Rule Action Table: </b>
+					<br>
+					<textarea id="ResACLRuleActionTbl" rows="10" cols="80" class="ResACLMapTbl" style="font-size:10px" readonly></textarea>
+				</div>
+				<div style="clear:both;">
+					<b>ACL Rule Config Table:</b>
+					<br>
+					<textarea id="ResACLRuleConfigTbl" rows="10" cols="140" class="ResACLMapTbl" style="font-size:10px"readonly></textarea>
+				</div>
+				<input type="text" id="ACLMapCfgHidden" name="ACLMap" value="None" style="display:none;">
+			</form>
+		</div>
+		-->
+		<!-- Transmit Queue Configurations Form -->
+		<div id="QueueConfig" class="vtabcontent">
+			<form id="QueueConfigForm" method="post" action="/cgi-bin/config.py?CMD=QueueCfg" onsubmit="return ResponseFillMultiple(this,'QueueCfg',0,':')">
+			<!--
+			<br><b>Queue Configurations : </b><br>
+			-->
+			<br>
+			<div id="QueueCfgPort">
+			</div>
+			<div id="QueueCfg">
+			</div>
+			</form>
+		</div>
+
+		<!-- QoS Configurations Form -->
+		<div id="QueueMapConfig" class="vtabcontent">
+			<form id="QueueMapConfigForm" method="post" action="/cgi-bin/config.py?CMD=QueueMapCfg" onsubmit="return PopulateQoSMap(this,true)">
+			<br><b>QoS Priority remap Configurations: </b><br><br>
+			<input type="text" id="p8021" name="p8021" value="0" style="display:none;">
+			<input type="text" id="diffserv" name="diffserv" value="0" style="display:none;">
+			<input type="text" id="QueueMapCfgHidden" name="QueueMapCfg" value="None" style="display:none;">
+			<input type="submit" name="Apply" value="Apply">
+			<br><br>
+			<div id="portqos" style="width:15%;float:left;">
+			<font size="2"><b>Port Based Priority:<b></font><br><br>
+			</div>
+			<div id="8021pmap" style="width:25%;float:left;">
+			<font size="2"><b>802.1p Priority:<b></font><br><br>
+			</div>
+			<div id="dscpmap" style="width:60%;float:left;">
+			<font size="2"><b>DiffServ Priority:<b></font><br><br>
+			</div>
+			</form>
+		</div>
+
+		<!-- Ingress Rate Limit Form -->
+		<div id="InRateLimitConfig" class="vtabcontent">
+			<form id="InRateLimitCfgForm" method="post" action="/cgi-bin/config.py?CMD=InRateLimitCfg" onsubmit="return ResponseFillMultiple(this,'InRateLimitCfg',0,':')">
+				<br><b>Port Ingress Bandwidth Control:</b><br>
+				<div id="InRateLimitPort">
+				</div>
+				<br>
+				<input type="text" value="Ingress Rate Limit" style="width:210px;" readonly  size="10" disabled>
+				<select id="InRateConfig" class="InRateLimitCfg" name="InRateLimit" style="width:150px" onchange="return DisableRateCfg('InRateConfig','InRateCfg')">
+					<option value="0">Disable</option>
+					<option value="1">Enable</option>
+				<select>
+				<br>
+				<input type="text" value="Ingress Rate Limit Type" style="width:210px;" readonly  size="10" disabled>
+				<select id='InRateLimitType' class="InRateLimitCfg InRateCfg" name="InRateType" style="width:150px" onchange="return DisplayInRateLimit('InRateLimitType')">
+					<option value="0">Priority Based</option>
+					<option value="1">Port Based</option>
+				<select>
+				<br>
+				<input type="text" value="Ingress Rate Limit Mode" style="width:210px;" readonly  size="10" disabled>
+				<span class="tooltip">
+				<select class="InRateLimitCfg InRateCfg" name="InRateMode" style="width:150px">
+					<option value="0">Mode0</option>
+					<option value="1">Mode1</option>
+					<option value="2">Mode2</option>
+					<option value="3">Mode3</option>
+				<select>
+					<span class="tooltiptext"> Mode0 - All Frame<br>Mode1 - Broadcast, Multicast and Flooded unicast Frame<br>Mode2 - Broadcast and Multicast Frames<br>Mode3 - Broadcast Frames only</span>
+				</span>
+				<br>
+				<div id="IngressPort">
+					<input type="text" value="Port" readonly  size="10" style="width:100px;" disabled>
+					<input type="text" value="Rate[pps]" readonly  size="10" style="width:100px;" disabled>
+					<input type="text" value="Configured Rate" readonly  size="10" style="width:120px;" disabled>
+					<br>
+					<input type="text" value="Port 0" size="10" style="width:100px;" disabled>
+					<input type="text" class="InRateCfg" name="Rate" value="0" size="10" style="width:100px;">
+					<input type="text" class="InRateLimitCfg" value="0" size="10" disabled style="width:120px;">
+				</div>
+				<div id="IngressPrio">
+					<input type="text" value="Priority" readonly  size="10" style="width:100px;" disabled>
+					<input type="text" value="Rate[pps]" readonly  size="10" style="width:100px;" disabled>
+					<input type="text" value="Configured Rate" readonly  size="10" style="width:120px;" disabled>
+					<br>
+					<input type="text" value="Priority 0" size="10" style="width:100px;" disabled>
+					<input type="text" class="InRateCfg" name="Pri0" value="0" size="10" style="width:100px;">
+					<input type="text" class="InRateLimitCfg" value="0" size="10" disabled style="width:120px;">
+					<br>
+					<input type="text" value="Priority 1" size="10" style="width:100px;" disabled>
+					<input type="text" class="InRateCfg" name="Pri1" value="0" size="10" style="width:100px;">
+					<input type="text" class="InRateLimitCfg" value="0" size="10" disabled style="width:120px;">
+					<br>
+					<input type="text" value="Priority 2" size="10" style="width:100px;" disabled>
+					<input type="text" class="InRateCfg" name="Pri2" value="0" size="10" style="width:100px;">
+					<input type="text" class="InRateLimitCfg" value="0" size="10" disabled style="width:120px;">
+					<br>
+					<input type="text" value="Priority 3" size="10" style="width:100px;" disabled>
+					<input type="text" class="InRateCfg" name="Pri3" value="0" size="10" style="width:100px;">
+					<input type="text" class="InRateLimitCfg" value="0" size="10" disabled style="width:120px;">
+					<br>
+					<input type="text" value="Priority 4" size="10" style="width:100px;" disabled>
+					<input type="text" class="InRateCfg" name="Pri4" value="0" size="10" style="width:100px;">
+					<input type="text" class="InRateLimitCfg" value="0" size="10" disabled style="width:120px;">
+					<br>
+					<input type="text" value="Priority 5" size="10" style="width:100px;" disabled>
+					<input type="text" class="InRateCfg" name="Pri5" value="0" size="10" style="width:100px;">
+					<input type="text" class="InRateLimitCfg" value="0" size="10" disabled style="width:120px;">
+					<br>
+					<input type="text" value="Priority 6" size="10" style="width:100px;" disabled>
+					<input type="text" class="InRateCfg" name="Pri6" value="0" size="10" style="width:100px;">
+					<input type="text" class="InRateLimitCfg" value="0" size="10" disabled style="width:120px;">
+					<br>
+					<input type="text" value="Priority 7" size="10" style="width:100px;" disabled>
+					<input type="text" class="InRateCfg" name="Pri7" value="0" size="10" style="width:100px;">
+					<input type="text" class="InRateLimitCfg" value="0" size="10" disabled style="width:120px;">
+				</div>
+				<br>
+				<button name="Apply" value="Apply" onclick="return submitFormInput('InRateLimitCfgForm','InRateLimitCfgHidden','Set','None','InRateLimitCfg','TypeClass',0,':')">Apply</button>
+				<input type="text" id="InRateLimitCfgHidden" name="InRateLimitCfg" value="None" style="display:none;">
+			</form>
+		</div>
+
+		<!-- Egress Rate Limit Form -->
+		<div id="EgRateLimitConfig" class="vtabcontent">
+			<form id="EgRateLimitCfgForm" method="post" action="/cgi-bin/config.py?CMD=EgRateLimitCfg" onsubmit="return ResponseFillMultiple(this,'EgRateLimitCfg',0,':')">
+				<br><b>Port Egress Bandwidth Control:</b><br>
+				<div id="EgRateLimitPort">
+				</div>
+				<input type="text" value="Egress Rate Limit" style="width:210px;" readonly  size="10" disabled>
+				<select id="EgRateConfig" class="EgRateLimitCfg" name="EgRateLimit" style="width:150px" onchange="return DisableRateCfg('EgRateConfig','EgRateCfg')">
+					<option value="0">Disable</option>
+					<option value="1">Enable</option>
+				<select>
+				<br>
+				<input type="text" value="Queue" readonly  size="10" disabled style="width:100px;">
+				<input type="text" value="Rate[pps]" readonly size="10" disabled style="width:100px;">
+				<input type="text" value="Configured Rate" readonly size="10" disabled style="width:120px;">
+				<br>
+				<input type="text" value="Queue 0" size="10" style="width:100px;" disabled>
+				<input type="text" class="EgRateCfg" name="Queue0" value="0" size="10" style="width:100px;">
+				<input type="text" class="EgRateLimitCfg" value="0" size="10" disabled style="width:120px;">
+				<br>
+				<input type="text" value="Queue 1" size="10" style="width:100px;" disabled>
+				<input type="text" class="EgRateCfg" name="Queue1" value="0" size="10" style="width:100px;">
+				<input type="text" class="EgRateLimitCfg" value="0" size="10" disabled style="width:120px;">
+				<br>
+				<input type="text" value="Queue 2" size="10" style="width:100px;" disabled>
+				<input type="text" class="EgRateCfg" name="Queue2" value="0" size="10" style="width:100px;">
+				<input type="text" class="EgRateLimitCfg" value="0" size="10" disabled style="width:120px;">
+				<br>
+				<input type="text" value="Queue 3" size="10" style="width:100px;" disabled>
+				<input type="text" class="EgRateCfg" name="Queue3" value="0" size="10" style="width:100px;">
+				<input type="text" class="EgRateLimitCfg" value="0" size="10" disabled style="width:120px;">
+				<br><br>
+				<button name="Apply" value="Apply" onclick="return submitFormInput('EgRateLimitCfgForm','EgRateLimitCfgHidden','Set','None','EgRateLimitCfg','TypeClass',0,':')">Apply</button>
+				<input type="text" id="EgRateLimitCfgHidden" name="EgRateLimitCfg" value="None" style="display:none;">
+			</form>
+		</div>
+
+		<!-- Port Mirroring Form -->
+		<div id="MirrorConfig" class="vtabcontent">
+			<form id="MirrorConfigForm" method = "post" action="/cgi-bin/config.py?CMD=MirrorCfg" onsubmit="return PopulateMirrorMap(this,true)">
+				<br>Port Mirroring Configurations:<br><br>
+				<div id="MirrorDiv">
+				</div>
+			</form>
+		</div>
+
+		<!-- Switch Statistics Form -->
+		<div id="SWStats" class="vtabcontent">
+			<form id="SWStatsForm" method="post" action="/cgi-bin/config.py?CMD=SWStats" onclick="return ResponseFill(this,'ResStatOut')">
+				<br>Switch MIB Counters : <br><br>
+				<button name="Refresh" value="Refresh" onclick="return submitFormInput('SWStatsForm','SWStatsHiddenInput','Refresh','None','ResStatOut','TypeId',0,':')">Refresh</button>
+				<button name="Clear" value="Clear" onclick="return submitFormInput('SWStatsForm','SWStatsHiddenInput','Clear','None','ResStatOut','TypeId',0,':')">Clear</button>
+				<input type="hidden" id="SWStatsHiddenInput" name="FormCmd" value="None">
+				<br><br>
+				<textarea id="ResStatOut" rows="15" cols="80" readonly></textarea>
+			</form>
+		</div>
+
+		<!-- Port Statistics Form -->
+		<div id="PerPortStats" class="vtabcontent">
+			<form id="PerPortStatsForm" method="post" action="/cgi-bin/config.py?CMD=PortStats" onsubmit="return GetStatsPort('PerPortStatsForm','ResPortStatOut')">
+				<br>Port MIB Counters : <br><br>
+			</form>
+		</div>
+
+		<!-- Switch Reg Access Form -->
+		<div id="SWDebug" class="vtabcontent">
+			<form method = "post" action="/cgi-bin/config.py?CMD=SWDebug" onsubmit="return ResponseFill(this,'ResRegValOut')">
+				<br>
+				Switch Register:
+				<input type="text" title="Input Should be in HEX!" name="swReg" size="10">
+				Value  :
+				<input id="ResRegValOut" type="text" title="Input Should be in HEX!" name="RegVal" size="10" disabled>
+				<input type="radio" name="access" value="get" checked onchange="DisableClassId('ResRegValOut',true,'TypeId',false,' ',0)"> Read
+				<input type="radio" name="access" value="set" onchange="DisableClassId('ResRegValOut',false,'TypeId',false,' ',0)"> write
+				<br><br><br>
+				<input type="submit" value="Submit">
+			</form>
+		</div>
+
+		<!-- PHY Reg Access Form -->
+		<div id="PHYDebug" class="vtabcontent">
+			<form method = "post" action="/cgi-bin/config.py?CMD=PHYDebug" onsubmit="return ResponseFill(this,'ResPhyRegValOut')">
+				<br>
+				PHY Register:
+				<input type="text" name="PhyReg" title="Input Should be in HEX!" size="5">
+				PHY ID:
+				<input type="text" name="PhyId" size="5">
+				Value  :
+				<input id="ResPhyRegValOut" type="text" name="RegVal" title="Input Should be in HEX!" size="10" disabled>
+				<input type="radio" name="access" value="get" checked onchange="DisableClassId('ResPhyRegValOut',true,'TypeId',false,' ',0)"> Read
+				<input type="radio" name="access" value="set" onchange="DisableClassId('ResPhyRegValOut',false,'TypeId',false,' ',0)"> write
+				<br><br><br>
+				<input type="submit" value="Submit">
+			</form>
+		</div>
+
+		<!-- System Shell Access Form -->
+		<div id="SystemDebug" class="vtabcontent">
+			<form method = "post" action="/cgi-bin/config.py?CMD=SystemDebug" onsubmit="return ResponseFill(this,'ResSysCmdOut')">
+				<br>
+				System cmd:	<input type="text" name="ShellCmd">
+				<input type="submit" value="Submit">
+				<br>
+				<br>
+				<textarea id="ResSysCmdOut" rows="15" cols="100" disabled></textarea>
+			</form>
+		</div>
+
+		<!-- Activity Log Form -->
+		<div id="ActivityLog" class="vtabcontent">
+			<form id="ActivityLogForm" method = "post" action="/cgi-bin/config.py?CMD=ActivityLog" onsubmit="return ResponseFill(this,'ResActyLog')">
+				<br>
+				Activity Logs:
+				<button name="Clear" value="Clear" onclick="return submitFormInput('ActivityLogForm','ActyLogHiddenInput','Clear','None','ResActyLog','TypeId',0,':')">Clear</button>
+				<br>
+				<input type="hidden" id="ActyLogHiddenInput" name="FormCmd" value="None">
+				<br>
+				<textarea id="ResActyLog" rows="15" cols="100" disabled></textarea>
+			</form>
+		</div>
+
+		<!-- Export Config Form -->
+		<div id="SaveConfig" class="vtabcontent">
+			<form>
+				<div id="overlayExport">
+					<div id="overlayText"> Please Be Patient ! <br> Configuration Export In Progress!! </div>
+				</div>
+				<br>
+				<button name="Save" value="Save" onclick="return SaveConfig()">Export To</button>
+				<a href="config.txt" download>Config.txt</a>
+				<br>
+				<input type="hidden" id="SaveConfigHidden" name="FormCmd" value="None">
+				<br>
+			</form>
+		</div>
+
+		<!-- Import Config Form -->
+		<div id="ApplyConfig" class="vtabcontent">
+			<form>
+				<div id="overlayImport">
+					<div id="overlayText"> Please Be Patient !<br> Configuration Import In Progress!! </div>
+				</div>
+				<br>
+				<input type="file" id="ConfigFile" value="None">
+				<button name="ApplyCfg" value="ApplyCfg" onclick="return ApplyConfig()">Apply</button>
+				<br>
+			</form>
+		</div>
+
+<!-- ################################################################ -->
+		<script>
+			var DevId, DevCap, DevPort, DisName,PhyPorts;
+			var FormCount = 0;
+			var flag = 1;
+			var waitfor = 0;
+
+			/* Dynamic page creations and setup */
+			function PopulateDynamicPages() {
+				PopulatePortMap('PortCfgForm',PhyPorts);
+				DisablePortCfg('NOCPU','Port','SetGetPort',2, 1);
+				PopulateVlanCfg('VIDCfgForm',DevPort);
+				PopulateVlanTable('VIDCfgFormInner');
+				PopulatePVIDCfg('PVIDCfgForm',DevPort);
+				DisablePortCfg('CPU','PVIDPort','SetGetPVID',3, 0);
+				PopulatePerPortStats('PerPortStatsForm',DevPort);
+				PopulateStaticMacCfg('StaticMACForm',DevPort);
+				PopulateStaticMacTable('StaticMacFormInner');
+				PopulateSTPPortCfg('STPPortCfgForm',PhyPorts);
+				DisablePortCfg('NOCPU','STPPort','STPPortConfig',8, 0);
+				param = 'onclick="submitFormInput(\'ACLRuleCfgForm\',\'ACLRuleCfgHidden\',\'Refresh\',\'None\',\'ResACLRuleTbl\',\'TypeId\',0,\':\')"';
+				PopulatePortSelect('ACLRulePort',PhyPorts,'ACLRulePort',param);
+				DisplayACLClass('ACLL2','ACLL3','ACLL4','ACLRuleCfgEnable');
+				param = 'onclick="submitFormInput(\'QueueConfigForm\',\'QueueCfgHidden\',\'Get\',\'None\',\'QueueCfg\',\'TypeClass\',0,\':\')"';
+				PopulatePortSelect('QueueCfgPort',PhyPorts,'QueueCfgPort',param);
+				PopulateQueueCfg('QueueCfg');
+				PopulateQueueMapCfg('portqos','8021pmap','dscpmap');
+				PopulateQoSMap(document.getElementById("QueueMapConfigForm"),false);
+				param = 'onclick="submitFormInput(\'InRateLimitCfgForm\',\'InRateLimitCfgHidden\',\'Get\',\'None\',\'InRateLimitCfg\',\'TypeClass\',0,\':\')"';
+				PopulatePortSelect('InRateLimitPort',PhyPorts,'InRateLimitPort',param);
+				param = 'onclick="submitFormInput(\'EgRateLimitCfgForm\',\'EgRateLimitCfgHidden\',\'Get\',\'None\',\'EgRateLimitCfg\',\'TypeClass\',0,\':\')"';
+				PopulatePortSelect('EgRateLimitPort',PhyPorts,'EgRateLimitPort',param);
+				PopulateMirrorCfg('MirrorDiv',DevPort);
+				PopulateMirrorMap(document.getElementById("MirrorConfigForm"),false);
+				/* PopulatePortSelect('ACLRuleActionPort',PhyPorts,'ACLActionPort'); */ /* NEEDED ? */
+				/* PopulatePortSelect('ACLRuleMapPort',PhyPorts,'ACLRuleMapPort'); */ /* NEEDED ? */
+				/* PopulateACLActionPortMap('DIVACLRuleActionRuleTable',PhyPorts); */ /* NEEDED ? */
+			}
+			/* Gets Device Information On Page Load */
+			function GetDevInfo(id) {
+				var PostRequest = new XMLHttpRequest();
+				var UserName = decodeURIComponent(document.cookie);
+				var uname = UserName.split("=")[1];;
+
+				PostRequest.open("POST", "/cgi-bin/config.py?CMD=DevInfo", true);
+				PostRequest.send();
+				PostRequest.onload = function () {
+					if(PostRequest.responseText.split("!")[0] == "No Device Found") {
+						alert(PostRequest.responseText);
+						window.location.reload();
+					} else {
+						DevId	= PostRequest.responseText.split(":")[0];
+						DevCap	= PostRequest.responseText.split(":")[1];
+						DevPort	= PostRequest.responseText.split(":")[2];
+						PhyPorts= DevCap.split("#")[0];
+						DisName	= PostRequest.responseText.split(":")[3];
+						document.getElementById(id).innerHTML +=
+							'<H1 style="color:red; font-family:verdana; font-size:100%;text-align:center;float:left;">' + DisName + '</H1>';
+						if(uname) {
+							document.getElementById(id).innerHTML += '<button style="float:right;margin:10px 0px;" id=Logout onclick="return Logout()">Logout</button><br><br>';
+							document.getElementById("dflt1").click();
+							document.getElementById("dflt2").click();
+							document.getElementById("dflt3").click();
+							document.getElementById("MainMenu").style.visibility = "visible";
+							PopulateDynamicPages();
+						}
+					}
+				}
+				if(uname) {
+					document.getElementById("UserAuth").style.display="none";
+					document.getElementById("Logout").style.visibility="visible";
+					document.getElementById("MainMenu").style.visibility = "visible";
+				} else {
+					PageDisplay = document.getElementById("MainMenu");
+					PageDisplay.style.visibility = "hidden";
+					document.getElementById("Logout").style.visibility="hidden";
+				}
+				return false;
+			}
+
+			/* Enable / Disable Port selections menu */
+			function DisablePortCfg(CPU, MName, ClassName, MemLen, Count) {
+				var Port,IdCnt,Min,Max,DevPorts;
+				var PortSelect = document.getElementsByName(MName);
+				var ClassMembers = document.getElementsByClassName(ClassName);
+		
+				if(CPU == "CPU"){
+					DevPorts = parseInt(DevPort) + 1;	
+				} else {
+					DevPorts = parseInt(PhyPorts) + 1;
+				}
+
+				for (Port = 1; Port < DevPorts; Port++) {
+					if(PortSelect[Port-1].checked) {
+						break;
+					}
+				}
+				for(IdCnt = 0; IdCnt < ClassMembers.length; IdCnt++) {
+					Min = (MemLen * Port) - MemLen;
+					Max = (MemLen * Port) - Count;
+					if((Port < DevPorts) && ((IdCnt+1) > Min) && ((IdCnt+1) <= Max)) {
+						ClassMembers[IdCnt].disabled = false;
+					} else {
+						ClassMembers[IdCnt].disabled = true;
+					}
+				}
+			}
+
+			/* Dynamically Loads Port configurations Menu */
+			function PopulatePortMap(id,Ports) {
+				var PopulateRequest = document.getElementById(id);
+
+				for(Port = 1; Port <= Ports; Port++) {
+				PopulateRequest.innerHTML += '<input type="radio" name="Port" id="PhyPort'+Port+'" value='+Port+' onclick="DisablePortCfg(\'NOCPU\',\'Port\',\'SetGetPort\', 2, 1)">Port'+Port+'<tab0>';
+/* FIXME Need to add in Phase 2, Powerdown mode has wirte issues  */
+/*
+				PopulateRequest.innerHTML += '<select class=SetGetPort name="Mode'+Port+'"><option value="enable">enable</option><option value="disable">disable</option></select>';
+*/
+				PopulateRequest.innerHTML += '<select style="width:160px;" class="SetGetPort" name="LinkSpeed'+Port+'"><option value="Auto">Auto</option><option value="10MHD">10 Mbps Half Duplex</option><option value="10MFD">10 Mbps Full Duplex</option><option value="100MHD">100 Mbps Half Duplex</option><option value="100MFD">100 Mbps Full Duplex</option><option value="1000MHD">1 Gbps Half Duplex</option><option value="1000MFD">1 Gbps Full Duplex</option></select>';
+				PopulateRequest.innerHTML += '<input class="SetGetPort" id="ResLinkInfo'+Port +'" type="text" name="Status" disabled>';
+				PopulateRequest.innerHTML += '<br>';
+				}
+				PopulateRequest.innerHTML += '<br><br><button name="Apply" value="Apply" onclick="return submitFormInput(\'PortCfgForm\',\'PortCfgHidden\',\'Set\',\'None\',\'SetGetPort\',\'TypeClass\',0,\':\')">Apply</button>';
+				PopulateRequest.innerHTML += '<input type="text" id="PortCfgHidden" name="PortCfg" value="None" style="display:none;">';
+			}
+
+			/* Dynamically Loads PVID configurations Menu */
+			function PopulatePVIDCfg(id,Ports) {
+				var PopulateRequest = document.getElementById(id);
+
+				for(Port = 1; Port <= Ports; Port++) {
+				PopulateRequest.innerHTML += '<input type="radio" name="PVIDPort" id="PVIDPort'+Port+'" value='+Port+' onclick="DisablePortCfg(\'CPU\',\'PVIDPort\',\'SetGetPVID\', 3, 0)">Port'+Port+'<tab0>';
+				PopulateRequest.innerHTML += '<input class=SetGetPVID type=text name="Pvid'+Port+'" size="2" style="width:160px">';
+				PopulateRequest.innerHTML += '<select style="width:160px" class="SetGetPVID" name="IngressFilter'+Port+'"><option value="0">disable</option><option value="1">enable</option></select>';
+				PopulateRequest.innerHTML += '<select style="width:200px" class="SetGetPVID" name="FrameAccType'+Port+'"><option value="AU">Accept Untagged Only</option><option value="AT">Accept Tagged Only</option><option value="AA">Accept ALL</option></select>';
+				//PopulateRequest.innerHTML += '<select style="width:160px" class="SetGetPVID" name="PortPriority'+Port+'"><option value="0">0</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option><option value="6">6</option><option value="7">7</option></select>';
+				PopulateRequest.innerHTML += '<br>';
+				}
+				PopulateRequest.innerHTML += '<br><br><button name="Apply" value="Apply" onclick="return submitFormInput(\'PVIDCfgForm\',\'PVIDCfgHidden\',\'Set\',\'None\',\'SetGetPVID\',\'TypeClass\',0,\':\')">Apply</button>';
+				PopulateRequest.innerHTML += '<input type="text" id="PVIDCfgHidden" name="PVIDCfg" value="None" style="display:none;">';
+			}
+
+			/* VLAN Configuration Add/Delete Handler */
+			function VlanCfg(Action) {
+				var Port,PVal;
+				var untag = 0;
+				var MemberPorts = 0;
+				var PostRequest = new XMLHttpRequest();
+
+				for(Port = 1; Port <= DevPort; Port++) {
+					PVal = document.getElementById("VP"+Port).value;
+					if(PVal == 'T') {
+						MemberPorts     |= (1 << (Port-1));
+					}
+					if(PVal == 'U') {
+						MemberPorts     |= (1 << (Port-1));
+						untag		|= (1 << (Port-1));
+					}
+					
+				}
+				document.getElementById('UntagMembers').value = untag;
+				document.getElementById('VlanMembers').value = MemberPorts;
+				document.getElementById('VlanAction').value = Action;
+/*
+				params.append('UntagMembers',untag);
+				params.append('VlanMembers',MemberPorts);
+				params.append('VlanAction',Action);
+*/
+				PostRequest.open("POST", "/cgi-bin/config.py?CMD=VlanCfg;", true);
+				PostRequest.send(new FormData(document.getElementById('VIDCfgForm')));
+				
+				FormCount ++;
+				if(flag) {
+					document.body.style.cursor = 'wait';
+					document.getElementById("overlayLoad").style.display = "block";
+					waitfor = 300;
+					WaitForLoad();
+				}
+
+				PostRequest.onload = function () {
+					FormCount --;
+					document.body.style.cursor = 'default';
+
+					if(PostRequest.responseText.split("!")[0] == "No Device Found") {
+						alert(PostRequest.responseText);
+						window.location.reload();
+					} else {
+						if(PostRequest.responseText.split("#")[0] == "Failed") {
+							alert(PostRequest.responseText.split("#")[1]);
+						}
+						PopulateVlanTable('VIDCfgFormInner');
+					}
+					//document.getElementById('vid').value = PostRequest.responseText;
+				}
+
+				return false;
+			}
+
+			/* Dynamically Populates VLAN Configurations Menu on load */
+			function PopulateVlanCfg(FormId,Ports) {
+				
+				var PopulateRequest = document.getElementById(FormId);
+				var Port;
+
+				PopulateRequest.innerHTML = '<br>';
+				PopulateRequest.innerHTML += 'VID<tab0>FID<tab2>Port Membership';
+				PopulateRequest.innerHTML += '<br>';
+				PopulateRequest.innerHTML += '<input style="font-size:10px;width:50px;visibility:hidden;" type=text size="2" name="dummy1">';
+				PopulateRequest.innerHTML += '<input style="font-size:10px;width:50px;visibility:hidden;" type=text size="2" name="dummy2">';
+				for(Port = 1; Port <= Ports; Port++) {
+					PopulateRequest.innerHTML += '<input style="font-size:10px;width:50px;" type="button" value="P'+Port+'" disabled>';
+				}
+
+				PopulateRequest.innerHTML += '<br>';
+				PopulateRequest.innerHTML += '<input style="font-size:10px;width:50px;" id="vid" type=text name="Vid" size="2">';
+				PopulateRequest.innerHTML += '<input style="font-size:10px;width:50px;" id="fid" type=text name="Fid" size="2">';
+				PopulateRequest.innerHTML += '<input id="UntagMembers" type=hidden name="UntagMembers">';
+				PopulateRequest.innerHTML += '<input id="VlanMembers" type=hidden name="VlanMembers">';
+				PopulateRequest.innerHTML += '<input id="VlanAction" type=hidden name="VlanAction">';
+				PopulateRequest.innerHTML += '<input id="VlanLoad" type=hidden value="None" name="VlanLoad">';
+
+				for(Port = 1; Port <= Ports; Port++) {
+					PopulateRequest.innerHTML += '<input title="Click for VLAN Membership" style="font-size:10px;width:50px;background-color:purple;color:white;" type="button" id="VP'+Port+'" value="N" onclick="SelectVLANMembership(\'VP'+Port+'\')">';
+				}
+				PopulateRequest.innerHTML += '<br><br><font size="1">N - Port not member of VLAN</font><br>'
+				PopulateRequest.innerHTML += '<font size="1">T - Port Tagged Member of VLAN</font><br>'
+				PopulateRequest.innerHTML += '<font size="1">U - Port Untagged Member of VLAN</font>'
+				PopulateRequest.innerHTML += '<br><br>';
+				PopulateRequest.innerHTML += '<input type="button" id="VlanAdd" value="Add" onclick="return VlanCfg(\'Add\')">';
+				PopulateRequest.innerHTML += '<input type="button" id="VlanDel" value="Delete" onclick="return VlanCfg(\'Del\')">';
+				PopulateRequest.innerHTML += '<br><br> <b>Vlan Table :</b><br><br>';
+				PopulateRequest.innerHTML += '<button onclick="return PopulateVlanTable(\'VIDCfgFormInner\')">Refresh</button>';
+				PopulateRequest.innerHTML += '<br><br>';
+				PopulateRequest.innerHTML += '<div id="VIDCfgFormInner"></div>';
+			}
+
+			/* Static MAC table configurations Add/Delete Handler */
+			function ALUCfg(ActionId) {
+				var Port,PVal;
+				var MemberPorts = 0;
+				var PostRequest = new XMLHttpRequest();
+
+				for(Port = 1; Port <= DevPort; Port++) {
+					PVal = document.getElementById("ALUP"+Port).value;
+					if(PVal == 'M') {
+						MemberPorts     |= (1 << (Port-1));
+					}
+				}
+				document.getElementById('ALUMembers').value = MemberPorts;
+				document.getElementById('ALUAction').value = ActionId;
+
+				PostRequest.open("POST", "/cgi-bin/config.py?CMD=StaticMacCfg;", true);
+				PostRequest.send(new FormData(document.getElementById('StaticMACForm')));
+				
+				FormCount ++;
+				if(flag) {
+					document.body.style.cursor = 'wait';
+					document.getElementById("overlayLoad").style.display = "block";
+					waitfor = 300;
+					WaitForLoad();
+				}
+
+				PostRequest.onload = function () {
+					FormCount --;
+					document.body.style.cursor = 'default';
+
+					if(PostRequest.responseText.split("!")[0] == "No Device Found") {
+						alert(PostRequest.responseText);
+						window.location.reload();
+					} else {
+						if(PostRequest.responseText.split("#")[0] == "Failed") {
+							alert(PostRequest.responseText.split("#")[1]);
+						}
+						//document.getElementById('ALUMACAddr').value = PostRequest.responseText;
+						PopulateStaticMacTable('StaticMacFormInner');
+					}
+				}
+				return false;
+			}
+
+			/* Function to Configure ACL Configuration*/
+			function ACLActionCfg(ActionId) {
+				var Port,PVal;
+				var MemberPorts = 0;
+
+				for(Port = 1; Port <= PhyPorts; Port++) {
+					PVal = document.getElementById("ACLP"+Port).value;
+					if(PVal == 'M') {
+						MemberPorts     |= (1 << (Port-1));
+					}
+				}
+				document.getElementById('ACLActionMembers').value = MemberPorts;
+				submitFormInput('ACLRuleActionCfgForm','ACLActionCfgHidden', ActionId,'None','ResACLRuleActionTbl','TypeClass',0,'#')
+			}
+
+			/* Dynamically Populates Static Mac Configurations Menu */
+			function PopulateStaticMacCfg(FormId,Ports) {
+				
+				var PopulateRequest = document.getElementById(FormId);
+				var Port;
+
+				//for(Port = 1; Port <= Ports; Port++) {
+				//	PopulateRequest.innerHTML += '<input style="font-size:10px;width:50px;" type="button" value="P'+Port+'" disabled>';
+				//}
+
+				PopulateRequest.innerHTML += '<input id="ALUIndex" type=text name="ALUIndex" style="width:160px;">';
+				PopulateRequest.innerHTML += '<input id="ALUMACAddr" type=text name="ALUMACAddr" style="width:160px;">';
+
+				for(Port = 1; Port <= Ports; Port++) {
+					//PopulateRequest.innerHTML += '<input title="Click for ALU Membership"style="font-size:10px;width:50px;background-color:#c84a4a;color:white;" type="button" id="ALUP'+Port+'" value="M" onclick="SelectALUMembership(\'ALUP'+Port+'\')">';
+					PopulateRequest.innerHTML += '<input type="checkbox" id="ALUP'+Port+'" value="N" onclick="SelectALUMembership(\'ALUP'+Port+'\')"><font size="2">P'+Port+'</font>';
+				}
+				PopulateRequest.innerHTML += '<input id="ALUMembers" type=hidden name="ALUMembers">';
+				PopulateRequest.innerHTML += '<input id="ALUAction" type=hidden name="ALUAction">';
+				PopulateRequest.innerHTML += '<input id="ALULoad" type=hidden value="None" name="ALULoad">';
+
+				PopulateRequest.innerHTML += '<br><br>';
+				PopulateRequest.innerHTML += '<input type="button" id="ALUAdd" value="Add" onclick="return ALUCfg(\'Add\')">';
+				PopulateRequest.innerHTML += '<input type="button" id="ALUDel" value="Delete" onclick="return ALUCfg(\'Del\')">';
+				PopulateRequest.innerHTML += '<br><br> <b>Static MAC Table :</b><br><br>';
+				PopulateRequest.innerHTML += '<button onclick="return PopulateStaticMacTable(\'StaticMacFormInner\')">Refresh</button>';
+				PopulateRequest.innerHTML += '<br><br>';
+				PopulateRequest.innerHTML += '<div id="StaticMacFormInner"></div>';
+			}
+
+			/* Dynamic Display of Static Mac Table information */
+			function PopulateStaticMacTable(StaticMacTableDivId) {
+
+				var PostRequest = new XMLHttpRequest();
+				var PopulateRequest = document.getElementById(StaticMacTableDivId);
+				var alu,alus,ResIndex;
+
+				FormCount ++;
+				if(flag) {
+					document.body.style.cursor = 'wait';
+					document.getElementById("overlayLoad").style.display = "block";
+					waitfor = 300;
+					WaitForLoad();
+				}
+
+				PostRequest.open("POST", "/cgi-bin/config.py?CMD=StaticMacInfo", true);
+				PostRequest.send(new FormData(document.getElementById('StaticMACForm')));
+
+				PostRequest.onload = function () {
+					FormCount --;
+					document.body.style.cursor = 'default';
+
+					if(PostRequest.responseText.split("!")[0] == "No Device Found") {
+						alert(PostRequest.responseText);
+						window.location.reload();
+					}	
+					
+					PopulateRequest.innerHTML = '<input type=hidden name="dummy" value="dummy">';
+
+					alus = parseInt(PostRequest.responseText.split("*")[0]);
+					
+					for(alu=1,ResIndex=1; alu <= alus ; alu++,ResIndex+=3) {
+						PopulateRequest.innerHTML += '<input style="width:160px;" class=SetGetVlan id="alu'+alu +'" type=text name="Alu" size="2" value="'+PostRequest.responseText.split("*")[ResIndex]+'" disabled>';
+						PopulateRequest.innerHTML += '<input style="width:160px;" class=SetGetVlan id="mac'+alu +'" type=text name="Mac" size="10" value="'+PostRequest.responseText.split("*")[ResIndex+1]+'" disabled>';
+						for(PIndex=0; PIndex < DevPort; PIndex++) {
+							var PMemberInfo = PostRequest.responseText.split("*")[ResIndex+2];
+					//		PopulateRequest.innerHTML += '<input style="font-size:10px;width:50px;" type=button value="'+PMemberInfo.split("-")[PIndex]+'" disabled>';
+							if(PMemberInfo.split("-")[PIndex] == 'N')
+								PopulateRequest.innerHTML += '<input type="checkbox" disabled><font size="2">P'+(PIndex+1)+'</font>';
+							else
+								PopulateRequest.innerHTML += '<input type="checkbox" checked disabled><font size="2">P'+(PIndex+1)+'</font>';
+						}
+						PopulateRequest.innerHTML += '<br>';
+					}
+				}
+				return false;
+			}
+
+			/* Dynamic Display of VLAN Table information */
+			function PopulateVlanTable(VidTableDivId) {
+
+				var PostRequest = new XMLHttpRequest();
+				var PopulateRequest = document.getElementById(VidTableDivId);
+				var vid,vids,ResIndex;
+
+				FormCount ++;
+				if(flag) {
+					document.body.style.cursor = 'wait';
+					document.getElementById("overlayLoad").style.display = "block";
+					waitfor = 300;
+					WaitForLoad();
+				}
+
+				PostRequest.open("POST", "/cgi-bin/config.py?CMD=VlanInfo", true);
+				PostRequest.send(new FormData(document.getElementById('VIDCfgForm')));
+
+				PostRequest.onload = function () {
+					FormCount --;
+					document.body.style.cursor = 'default';
+
+					if(PostRequest.responseText.split("!")[0] == "No Device Found") {
+						alert(PostRequest.responseText);
+						window.location.reload();
+					}	
+					PopulateRequest.innerHTML = '<input type=hidden name="dummy" value="dummy">';
+					
+					vids = parseInt(PostRequest.responseText.split(":")[0]);
+					
+					for(vid=1,ResIndex=2; vid <= vids ; vid++,ResIndex+=3) {
+						PopulateRequest.innerHTML += '<input style="font-size:10px;width:50px;" class=SetGetVlan id="vid'+vid +'" type=text name="Vid" size="2" value="'+PostRequest.responseText.split(":")[ResIndex]+'" disabled>';
+						PopulateRequest.innerHTML += '<input style="font-size:10px;width:50px;" class=SetGetVlan id="fid'+vid +'" type=text name="Fid" size="2" value="'+PostRequest.responseText.split(":")[ResIndex+1]+'" disabled>';
+						for(PIndex=0; PIndex < DevPort; PIndex++) {
+							var PMemberInfo = PostRequest.responseText.split(":")[ResIndex+2];
+							PopulateRequest.innerHTML += '<input style="font-size:10px;width:50px;" type=button value="'+PMemberInfo.split("-")[PIndex]+'" disabled>';
+						}
+						PopulateRequest.innerHTML += '<br>';
+					}
+				}
+
+				return false;
+			}
+
+			/* Dynamic Display of STP Port Configurations and Status information */
+			function PopulateSTPPortCfg(id,Ports) {
+				var PopulateRequest = document.getElementById(id);
+				var def_checked = "";
+
+				for(Port = 1; Port <= Ports; Port++) {
+					if(Port == 1)
+						def_checked = "Checked";
+					else
+						def_checked = "";
+					PopulateRequest.innerHTML += '<input type="radio" name="STPPort" id="STPPort'+Port+'" value='+Port+' onclick="DisablePortCfg(\'NOCPU\',\'STPPort\',\'STPPortConfig\', 8, 0)" '+def_checked+'>Port'+Port+'<tab0>';
+					PopulateRequest.innerHTML += '<select id="STPPort'+Port+'State" name="STPPortState'+Port+'" class="STPPortConfig" style="width:80px"><option value="0">Disabled</option><option value="1">Enabled</option><select>';
+					PopulateRequest.innerHTML += '<select id="STPPort'+Port+'Prio" name="STPPortPrio'+Port+'" class="STPPortConfig" style="width:80px"><option value="0">0</option><option value="16">16</option><option value="32">32</option><option value="48">48</option><option value="64">64</option><option value="80">80</option><option value="96">96</option><option value="112">112</option><option value="128">128</option><option value="144">144</option><option value="160">160</option><option value="176">176</option><option value="192">192</option><option value="208">208</option><option value="224">224</option><option value="240">240</option></select>';
+					PopulateRequest.innerHTML += '<input id="STPPort'+Port+'PathCost" type="text" name="STPPathCost'+Port+'" class="STPPortConfig" value="0" size="3" style="width:100px;">';
+					PopulateRequest.innerHTML += '<select id="STPPort'+Port+'Edge" name="STPPortEdge'+Port+'" class="STPPortConfig" style="width:80px"><option value="0">Disabled</option><option value="1">Enabled</option><select>';
+					PopulateRequest.innerHTML += '<select id="STPPort'+Port+'AutoEdge" name="STPPortAutoEdge'+Port+'" class="STPPortConfig" style="width:100px"><option value="0">Disabled</option><option value="1">Enabled</option><select>';
+					PopulateRequest.innerHTML += '<input id="STPPort'+Port+'EdgePathCost" type="text" name="STPEdgePathCost'+Port+'" class="STPPortConfig" value="0" size="6" style="width:130px;">';
+					PopulateRequest.innerHTML += '<select id="STPPort'+Port+'Mcheck" name="STPPortMcheck'+Port+'" class="STPPortConfig" style="width:80px"><option value="0">Disabled</option><option value="1">Enabled</option><select>';
+					PopulateRequest.innerHTML += '<select id="STPPort'+Port+'P2P" name="STPPortPTP'+Port+'" class="STPPortConfig" style="width:80px"><option value="0">Disabled</option><option value="1">Enabled</option><option value="2">Auto</option>><select>';
+					PopulateRequest.innerHTML += '<br>';
+				}
+				PopulateRequest.innerHTML += '<button name="Apply" value="Apply" onclick="return submitFormInput(\'STPPortCfgForm\',\'STPPortInfo\',\'Set\',\'None\',\'STPPortConfig\',\'TypeClass\',0,\':\')">Apply</button>';
+				PopulateRequest.innerHTML += '<br><br>';
+				PopulateRequest.innerHTML += 'STP Status:';
+				PopulateRequest.innerHTML += '<br><br>';
+				PopulateRequest.innerHTML += '<input type="hidden" id="STPPortInfo" name="FormCmd" value="None">';
+				PopulateRequest.innerHTML += '<input type="hidden" id="STPPortLoad" name="STPPortLoad" value="None">';
+				PopulateRequest.innerHTML += '<button name="Refresh" value="Refresh" onclick="return submitFormInput(\'STPPortCfgForm\',\'STPPortInfo\',\'Get\',\'None\',\'STPPortConfig\',\'TypeClass\',0,\':\')">Refresh</button>';
+				PopulateRequest.innerHTML += '<br><br>';
+				PopulateRequest.innerHTML += '<textarea id="ResPortSTPInfo" rows="12" cols="80" class="STPPortConfig" style="font-weight:bold;" readonly></textarea>';
+			}
+
+			/* Populate QoS  Configurations */
+			function PopulateQoSMap(form,set) {
+				var PostRequest = new XMLHttpRequest();
+				var p8021,diffserv,Port;
+				var ClassMembers = document.getElementsByClassName('QueueMapCfg');
+
+				if(set) {
+					p8021 = 0;
+					diffserv = 0;
+					for(Port = 1; Port < DevPort; Port++) {
+						if(document.getElementById('p8021P'+Port).checked)
+							p8021	|= (1 << (Port-1));
+						if(document.getElementById('diffservP'+Port).checked)
+							diffserv |= (1 << (Port-1));
+					}
+					document.getElementById('p8021').value = p8021;
+					document.getElementById('diffserv').value = diffserv;
+					document.getElementById('QueueMapCfgHidden').value = 'Set';
+				}
+
+				PostRequest.open(form.method, form.action, true);
+				PostRequest.send(new FormData(form));
+
+				FormCount ++;
+				if(flag) {
+					document.body.style.cursor = 'wait';
+					document.getElementById("overlayLoad").style.display = "block";
+					waitfor = 300;
+					WaitForLoad();
+				}
+
+				PostRequest.onload = function () {
+					FormCount --;
+					document.body.style.cursor = 'default';
+
+					if(PostRequest.responseText.split("!")[0] == "No Device Found") {
+						alert(PostRequest.responseText);
+						window.location.reload();
+						return false;
+					}
+					p8021 = parseInt(PostRequest.responseText.split(":")[0]);
+					diffserv = parseInt(PostRequest.responseText.split(":")[1]);
+					for(Port = 1; Port < DevPort; Port++) {
+						document.getElementById('p8021P'+Port).checked = (p8021 & (1 << (Port-1)));
+						document.getElementById('diffservP'+Port).checked = (diffserv & (1 << (Port-1)));
+					}
+					for(var IdCnt = 0; IdCnt < ClassMembers.length; IdCnt++) {
+						ClassMembers[IdCnt].value = PostRequest.responseText.split(":")[IdCnt+2];
+					}
+					document.getElementById('QueueMapCfgHidden').value = "Get";
+				}
+				return false;
+			}
+
+			/* Populate Port Mirror Configurations */
+			function PopulateMirrorMap(form,set) {
+				var PostRequest = new XMLHttpRequest();
+				var MrrRx,MrrTx;
+
+				if(set) {
+					MrrRx = 0;
+					MrrTx = 0;
+					for(Port = 1; Port <= DevPort; Port++) {
+						if(document.getElementById('MrrRx'+Port).checked)
+							MrrRx	|= (1 << (Port-1));
+						if(document.getElementById('MrrTx'+Port).checked)
+							MrrTx	|= (1 << (Port-1));
+					}
+					document.getElementById('MrrRxSel').value = MrrRx;
+					document.getElementById('MrrTxSel').value = MrrTx;
+					document.getElementById('MrrCfgHidden').value = 'Set';
+				}
+
+				PostRequest.open(form.method, form.action, true);
+				PostRequest.send(new FormData(form));
+
+				FormCount ++;
+				if(flag) {
+					document.body.style.cursor = 'wait';
+					document.getElementById("overlayLoad").style.display = "block";
+					waitfor = 300;
+					WaitForLoad();
+				}
+
+				PostRequest.onload = function () {
+					FormCount --;
+					document.body.style.cursor = 'default';
+
+					//	alert(PostRequest.responseText);
+					if(PostRequest.responseText.split("!")[0] == "No Device Found") {
+						alert(PostRequest.responseText);
+						window.location.reload();
+						return false;
+					}
+					if(PostRequest.responseText.split("#")[1] == "Info") {
+						alert(PostRequest.responseText.split("#")[2]);
+					}
+					document.getElementById('CapPort').value = PostRequest.responseText.split(":")[0];
+					MrrRx = parseInt(PostRequest.responseText.split(":")[1]);
+					MrrTx = parseInt(PostRequest.responseText.split(":")[2]);
+					for(Port = 1; Port < DevPort; Port++) {
+						document.getElementById('MrrRx'+Port).checked = (MrrRx & (1 << (Port-1)));
+						document.getElementById('MrrTx'+Port).checked = (MrrTx & (1 << (Port-1)));
+					}
+					document.getElementById('MrrCfgHidden').value = "Get";
+					document.getElementById('MrrCfgLoadHidden').value = 'None';
+					DisSniffPort();
+				}
+				return false;
+			}
+
+			/* Populate Port Mirror Configurations */
+			function PopulateMirrorCfg(id,Ports) {
+				var PopulateRequest = document.getElementById(id);
+				var Port;
+
+				PopulateRequest.innerHTML += '<input type="text" value="Sniffer Port" readonly style="border:0;" size="20" disabled>';
+				PopulateRequest.innerHTML += '<select name="CapPort" id="CapPort"  onchange="DisSniffPort()"></select>'
+				document.getElementById('CapPort').options.add(new Option("Disabled","0"));
+				for(Port = 1; Port <= Ports; Port++)
+					document.getElementById('CapPort').options.add(new Option("Port"+Port,Port));
+					//PopulateRequest.innerHTML += '<input type="radio" id="CapPort'+Port+'" name="CapPort" value="'+(Port-1)+'"><font size="1" >Port'+Port+'</font>';
+				PopulateRequest.innerHTML += '<br>';
+				PopulateRequest.innerHTML += '<input type="text" value="Mirrored Port" readonly style="border:0;" size="20" disabled>';
+				for(Port = 1; Port <= Ports; Port++)
+					PopulateRequest.innerHTML += '<input type="checkbox" style="visibility:hidden;" disabled><font size="1">P'+Port+'</font>';
+				PopulateRequest.innerHTML += '<br>';
+
+				PopulateRequest.innerHTML += '<input type="text" value="Mirror Rx" readonly style="border:0;" size="20" disabled>';
+				for(Port = 1; Port <= Ports; Port++)
+					PopulateRequest.innerHTML += '<input type="checkbox" id="MrrRx'+Port+'"><font size="1">Rx</font>';
+				PopulateRequest.innerHTML += '<br>';
+
+				PopulateRequest.innerHTML += '<input type="text" value="Mirror Tx" readonly style="border:0;" size="20" disabled>';
+				for(Port = 1; Port <= Ports; Port++)
+					PopulateRequest.innerHTML += '<input type="checkbox" id="MrrTx'+Port+'"><font size="1">TX</font>';
+				PopulateRequest.innerHTML += '<br><br>';
+
+				PopulateRequest.innerHTML += '<input type="text" id="MrrCfgHidden" name="MrrCfg" value="Get" style="display:none;">';
+				PopulateRequest.innerHTML += '<input type="text" id="MrrCfgLoadHidden" name="MrrLoadCfg" value="None" style="display:none;">';
+				PopulateRequest.innerHTML += '<input type="text" id="MrrRxSel" name="MrrRx" value="0" style="display:none;">';
+				PopulateRequest.innerHTML += '<input type="text" id="MrrTxSel" name="MrrTx" value="0" style="display:none;">';
+				PopulateRequest.innerHTML += '<input type="submit" name="submit" value="Submit">';
+			}
+
+			/* Dynamic Display Port Radio Map*/
+			function PopulatePortSelect(id,Ports,Name,ChangeAction) {
+				var PopulateRequest = document.getElementById(id);
+				
+				//PopulateRequest.innerHTML += '<div style="clear:both">';
+				for(Port = 1; Port <= Ports; Port++) {
+					if(Port == 1) {
+						def_checked = "checked";
+					} else {
+						def_checked = " ";
+					}
+					PopulateRequest.innerHTML += '<input type="radio" name="'+Name+'" value="'+(Port-1)+'" '+def_checked+' '+ChangeAction+'> <font size="2">Port'+Port+'</font>';
+				}
+				//PopulateRequest.innerHTML += '</div>';
+			}
+
+			/* Dynamic Display of STP Port Configurations and Status information */
+			function PopulateACLActionPortMap(id,Ports) {
+
+				var PopulateRequest = document.getElementById(id);
+				var Port;
+
+				PopulateRequest.innerHTML += '<input type="text" value="Port Map"  readonly style="border:0;" size="12" disabled>';
+				for(Port = 1; Port <= Ports; Port++) {
+					PopulateRequest.innerHTML += '<input title="Click for Port Map" type="checkbox" id="ACLP'+Port+'" value="N" onclick="SelectALUMembership(\'ACLP'+Port+'\')"><font size="2">P'+Port+'</font>';
+				}
+				PopulateRequest.innerHTML += '<br>';
+				PopulateRequest.innerHTML += '<input type="button" id="ACLActionAdd" value="Add" onclick="return ACLActionCfg(\'Add\')">';
+				PopulateRequest.innerHTML += '<input type="button" id="ACLActionDel" value="Delete" onclick="return ACLActionCfg(\'Delete\')">';
+				PopulateRequest.innerHTML += '<br><br>';
+			//	PopulateRequest.innerHTML += '<b>Rule Action Table</b><br>';
+			//	PopulateRequest.innerHTML += '<button name="Refresh" value="Refresh" onclick="return submitFormInput(\'ACLRuleActionCfgForm\',\'ACLActionCfgHidden\', \'Refresh\',\'None\',\'ResACLRuleActionTbl\',\'TypeClass\',0,\'#\')">Refresh</button><br>';
+			//	PopulateRequest.innerHTML += '<textarea id="ResACLRuleActionTbl" rows="16" cols="70" class="ResACLRuleActionTbl" style="font-size:10px" readonly></textarea>';
+			//	PopulateRequest.innerHTML += '<br>';
+			}
+
+			/* Populates Port Stats Menu on load  */
+			function PopulatePerPortStats(id,Ports) {
+				var PopulateRequest = document.getElementById(id);
+				var def_checked = "";
+				
+				PopulateRequest.innerHTML += '<button onclick="return submitFormInput(\'PerPortStatsForm\',\'PortStatsAction\',\'Get\',\'None\',\'ResPortStatOut\',\'TypeId\',0,\':\')">Refresh</button>';
+				PopulateRequest.innerHTML += '<input type="text" id="PortStatsAction" name="FormCmd" value="None" style="display:none;">';
+				PopulateRequest.innerHTML += '<button onclick="return submitFormInput(\'PerPortStatsForm\',\'PortStatsAction\',\'Clear\',\'None\',\'ResPortStatOut\',\'TypeId\',0,\':\')">clear</button>';
+				PopulateRequest.innerHTML += '<br><br>';
+
+				for(Port = 1; Port <= Ports; Port++) {
+					if(Port == 1)
+						def_checked = "Checked";
+					else
+						def_checked = " ";
+					PopulateRequest.innerHTML += '<input type="radio" name="StatPort" value="'+(Port-1)+'" onclick="return GetStatsPort(\'PerPortStatsForm\',\'ResPortStatOut\')" '+def_checked+'> Port'+Port;
+				}
+				PopulateRequest.innerHTML += '<br>';
+				PopulateRequest.innerHTML += '<textarea id="ResPortStatOut" rows="15" cols="80" readonly></textarea>';
+				PopulateRequest.innerHTML += '<br>';
+			}
+
+			/* Populates Queue Configurations on Load  */
+			function PopulateQueueCfg(id) {
+				var PopulateRequest = document.getElementById(id);
+				var Priority = 8;
+				var Queue = 4;
+				var ref;
+
+				PopulateRequest.innerHTML = '<br>Traffic Class Mapping Configurations :<br><br>';
+				PopulateRequest.innerHTML += '<input type="text" value="Priority" readonly style="border:0;" size="10" disabled> ';
+				PopulateRequest.innerHTML += '<input type="text" value="Queue Id" readonly style="border:0;" size="10" disabled><br><br>';
+				for(ref = 0; ref < Priority; ref++) {
+					PopulateRequest.innerHTML += '<input type="text" value="Priority'+ref+'" readonly style="border:0;" size="10" disabled> ';
+				PopulateRequest.innerHTML += '<select name="Port'+ref+'QueueId" class="QueueCfg" style="width:150px"><option selected value="0">0</option><option value="1">1</option><option value="2">2</option><option value="3">3</option></select><br>';
+				}
+				PopulateRequest.innerHTML += '<br>Scheduler Type :<br><br>';
+				for(ref = 0; ref < Queue; ref++) {
+					PopulateRequest.innerHTML += '<input type="text" value="Queue Id '+ref+'" readonly style="border:0;" size="10" disabled> ';
+					PopulateRequest.innerHTML += '<select name="Queue'+ref+'sched" class="QueueCfg" style="width:150px"><option selected value="0">Strict</option><option value="2">Weighted Round Robin</option></select><br>';
+				}
+				PopulateRequest.innerHTML += '<br><button name="Refresh" value="Refresh" onclick="return submitFormInput(\'QueueConfigForm\',\'QueueCfgHidden\',\'Set\',\'None\',\'QueueCfg\',\'TypeClass\',0,\':\')">Apply</button>';
+				//PopulateRequest.innerHTML += '<button name="Refresh" value="Refresh" onclick="return submitFormInput(\'QueueConfigForm\',\'QueueCfgHidden\',\'Get\',\'None\',\'QueueCfg\',\'TypeClass\',0,\':\')">Get</button>';
+				PopulateRequest.innerHTML += '<input type="text" id="QueueCfgHidden" name="QueueCfg" value="None" style="display:none;">'
+			}
+
+			/* Populates QoS Configurations on Load  */
+			function PopulateQueueMapCfg(id1,id2,id3) {
+				var Priority = 8;
+				var Queue = 4;
+				var ref;
+				var Populate;
+
+				Populate = document.getElementById(id1);
+				for (var port=1; port <= PhyPorts; port++) {
+					Populate.innerHTML += '<input type="text" value="Port'+port+'" readonly style="width:50px;border:0;" size="10" disabled> ';
+					Populate.innerHTML += '<select name="portqos'+port+'QueueId" class="QueueMapCfg" style="width:50px"><option selected value="0">0</option><option value="1">1</option><option value="2">2</option><option value="3">3</option>><option value="4">4</option>><option value="5">5</option>><option value="6">6</option>><option value="7">7</option></select><br>';
+				}
+
+				Populate = document.getElementById(id2);
+				for(Port = 1; Port <= PhyPorts; Port++)
+					Populate.innerHTML += '<input type="checkbox" id="p8021P'+Port+'"><font size="1">P'+Port+'</font>';
+				Populate.innerHTML += '<br>';
+
+				for(ref = 0; ref < Priority; ref++) {
+					Populate.innerHTML += '<input type="text" value="Priority'+ref+'" readonly style="width:80px;border:0;" size="10" disabled> ';
+				Populate.innerHTML += '<select name="8021p'+ref+'QueueId" class="QueueMapCfg" style="width:50px"><option selected value="0">0</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option>><option value="5">5</option>><option value="6">6</option>><option value="7">7</option></select><br>';
+				}
+				Priority = 64;
+				Populate = document.getElementById(id3);
+				for(Port = 1; Port <= PhyPorts; Port++)
+					Populate.innerHTML += '<input type="checkbox" id="diffservP'+Port+'"><font size="1">P'+Port+'</font>';
+				Populate.innerHTML += '<br>';
+
+				for(ref = 0; ref < Priority; ref++) {
+					Populate.innerHTML += '<input type="text"  value="Class'+ref+'" readonly style="width:80px;border:0;" size="10" disabled> ';
+					Populate.innerHTML += '<select name="dscp'+ref+'QueueId" class="QueueMapCfg" style="width:50px"><option selected value="0">0</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option>><option value="5">5</option>><option value="6">6</option>><option value="7">7</option></select>';
+				//	if(((ref+1)%16) == 0)
+				//		Populate.innerHTML += '<br>';
+				}
+				//DisplayQoSClass('8021pmap','dscpmap', 1);
+			}
+
+			/* Handler for VLAN Membership */
+			function SelectVLANMembership(id) {
+				var element = document.getElementById(id);
+				
+				if(element.value == "N") {
+					element.value = "T";
+					element.title = "T - Tagged Member";
+					element.style.backgroundColor = "green"
+					return;
+				} 	
+				if(element.value == "T") {
+					element.value = "U";
+					element.title = "U - Untagged Member";
+					element.style.backgroundColor = "blue"
+					return;
+				} 	
+				if(element.value == "U") {
+					element.value = "N";
+					element.title = "N - Not a Member";
+					element.style.backgroundColor = "purple"
+					return;
+				} 	
+			}
+
+			/* Handler for ALU Membership */
+			function SelectALUMembership(id) {
+				var element = document.getElementById(id);
+				if(element.value == "M") {
+					element.value = "N";
+					element.title = "N - Not a Member";
+					return;
+				} 	
+				if(element.value == "N") {
+					element.value = "M";
+					element.title = "M - Member Port";
+					return;
+				} 	
+			}
+
+			/* To Get per port statistics */
+			function GetStatsPort(FormId,ResOut) {
+				var Port;
+				var PortSelect = document.getElementsByName('StatPort');
+
+				for (Port = 1; Port <= DevPort; Port++) {
+					if(PortSelect[Port-1].checked) {
+						break;
+					}
+				}
+			//	console.log(Port);
+				if(Port <= DevPort) {
+					ResponseFill(document.getElementById(FormId),ResOut);
+					PortSelect[Port-1].checked = true;
+				}
+				return true;
+			}
+
+			/* OnClick Handler to provide Hidden input to backend and submit form */
+			function submitFormInput(FormId,ElementId,ValueIn,ValueOut,ResId,FillType,ClassIndex,SplitType){
+
+				document.getElementById(ElementId).value = ValueIn;
+				if(FillType == "TypeId")
+					ResponseFill(document.getElementById(FormId),ResId);
+				if(FillType == "TypeClass")
+					ResponseFillMultiple(document.getElementById(FormId),ResId,ClassIndex,SplitType);
+				document.getElementById(ElementId).value = ValueOut;
+				return false;
+			}
+
+			/* ACL Handler for Disable/Enable text field on input acction */
+			function DisableSelection(ElementId,ElementName) {
+				var modselect, cfgselect, count;
+
+				modselect = document.getElementById(ElementId).value;
+				cfgselect = document.getElementsByName(ElementName);
+
+				for (count = 0; count < 3; count++)
+					if(cfgselect[count].checked)
+						break;
+
+				if(count == 2) {
+					//console.log(modselect);
+					if(modselect == "0") {
+						DisableClassId('ACLRuleCfgIPProtocol',false,'TypeId',false,' ', 0)	
+						DisableClassId('ACLRuleCfgSrc',true,'TypeId',false,' ', 0)	
+						DisableClassId('ACLPort',true,'TypeClass',false,' ', 0)	
+						DisableClassId('ACLTCPSeq',true,'TypeClass',false,' ', 0)	
+					} else if (modselect == "3") {
+						DisableClassId('ACLRuleCfgIPProtocol',true,'TypeId',false,' ', 0)	
+						DisableClassId('ACLRuleCfgSrc',true,'TypeId',false,' ', 0)	
+						DisableClassId('ACLPort',true,'TypeClass',false,' ', 0)	
+						DisableClassId('ACLTCPSeq',false,'TypeClass',false,' ', 0)	
+					} else {
+						DisableClassId('ACLRuleCfgSrc',false,'TypeId',false,' ', 0)	
+						DisableClassId('ACLRuleCfgIPProtocol',true,'TypeId',false,' ', 0)	
+						DisableClassId('ACLPort',false,'TypeClass',false,' ', 0)	
+						DisableClassId('ACLTCPSeq',true,'TypeClass',false,' ', 0)	
+					}
+				}
+			}
+
+			/* Handler for Disable/Enable text field on input acction */
+			function DisableClassId(ElementId,action,FillType,check,CheckId,val) {
+				var ctn_count, content;
+
+				if(check)
+					if(document.getElementById(CheckId).value == val)
+						action = false;
+
+				if(FillType == "TypeClass") {
+					content = document.getElementsByClassName(ElementId);
+
+					for (ctn_count = 0; ctn_count < content.length; ctn_count++) {
+						if(action) 
+							content[ctn_count].disabled = true;
+						else
+							content[ctn_count].disabled = false;
+					}
+				}
+				if(FillType == "TypeId") {
+					content = document.getElementById(ElementId);
+			
+					if(action)
+						content.disabled = true;
+					else
+						content.disabled = false;
+				}
+			}
+
+			/* Handler for display config field on input acction */
+			function DisplayClass(ClassName,action) {
+				var ctn_count, content;
+
+				content = document.getElementsByClassName(ClassName);
+
+				if(action) {
+					document.getElementById(ClassName).style.display = 'none';
+				} else {
+					document.getElementById(ClassName).style.display = 'block';
+					//content[0].selected = true;
+				}
+
+				for (ctn_count = 0; ctn_count < content.length; ctn_count++) {
+					if(action) { 
+						content[ctn_count].style.display = 'none';
+					} else {
+						content[ctn_count].style.display = 'block';
+					}
+				}
+			}
+
+			/* ACL Handler for display config field on input acction */
+			function DisplayACLClass(ClassName1,ClassName2,ClassName3,ElmtId) {
+				var count;
+				var cfgselect = document.getElementsByName('ACLRuleType');
+				var MatchCriteria = '<option selected value="1">Ether Type</option><option value="2">MAC Addr</option><option value="3">Both</option>:<option value="1">IP Addr</option><option value="2">SRC and DST</option>:<option value="1">TCP Port</option><option value="2">UDP Port</option><option value="3">TCP Seq</option><option value="0">Protocol</option>';
+
+				for (count = 0; count < 3; count++)
+					if(cfgselect[count].checked) {
+						document.getElementById('ACLRuleCfgEnable').innerHTML = MatchCriteria.split(":")[count];
+						break;
+					}
+
+				DisplayClass(ClassName1,0);
+				DisplayClass(ClassName2,1);
+				DisplayClass(ClassName3,1);
+				DisableSelection('ACLRuleCfgEnable','ACLRuleType');
+
+			}
+
+			/* QoS Handler for display config field on input acction */
+			function DisplayQoSClass(id) {
+				var Select;
+
+				Select = document.getElementById(id).value;
+
+				if(Select == "0") {
+					DisplayClass('8021pmap',1);
+					DisplayClass('dscpmap',1);
+					document.getElementById('qospq').style.display = 'none';
+				}
+				if(Select == "1") {
+					DisplayClass('8021pmap',1);
+					DisplayClass('dscpmap',0);
+					document.getElementById('qospq').style.display = 'block';
+				}
+				if(Select == "2") {
+					DisplayClass('8021pmap',0);
+					DisplayClass('dscpmap',1);
+					document.getElementById('qospq').style.display = 'block';
+				}
+			}
+
+			/* Rate Limit Handler for display config field on input action */
+			function DisableRateCfg(ElmId,ElmClass) {
+				var Select;
+				Select = document.getElementById(ElmId).value;
+				
+				DisableClassId(ElmClass,!(parseInt(Select)),'TypeClass',false,' ',0);
+			}
+
+			/* Rate Handler for display config field on input action */
+			function DisplayInRateLimit(id) {
+				var Select;
+
+				Select = document.getElementById(id).value;
+
+				if(Select == "1") {
+					document.getElementById('IngressPort').style.display = 'block';
+					document.getElementById('IngressPrio').style.display = 'none';
+					return;
+				}
+				if(Select == "0") {
+					document.getElementById('IngressPort').style.display = 'none';
+					document.getElementById('IngressPrio').style.display = 'block';
+					return;
+				}
+			}
+
+			/* Handler for Disable/Enable Mirrored port selection */
+			function DisSniffPort() {
+				var CapPort = document.getElementById('CapPort').value;
+				var MrrRx, MrrTx;
+
+				for(var Port=1; Port <= DevPort; Port++) {
+					MrrRx = document.getElementById('MrrRx'+Port);
+					MrrTx = document.getElementById('MrrTx'+Port);
+					if(CapPort != "0") {
+						if(Port == CapPort) {
+							MrrRx.disabled = true;
+							MrrTx.disabled = true;
+							MrrRx.checked = false;
+							MrrTx.checked = false;
+						} else {
+							MrrRx.disabled = false;
+							MrrTx.disabled = false;
+						}
+					} else {
+						MrrRx.disabled = true;
+						MrrTx.disabled = true;
+						MrrRx.checked = false;
+						MrrTx.checked = false;
+					}
+				}
+			}
+
+			/* Fills the Backend response into the ID */
+			function ResponseFill(form,id) {
+				var PostRequest = new XMLHttpRequest();
+				PostRequest.open(form.method, form.action, true);
+				PostRequest.send(new FormData(form));
+
+				FormCount ++;
+				if(flag) {
+					document.body.style.cursor = 'wait';
+					document.getElementById("overlayLoad").style.display = "block";
+					waitfor = 300;
+					WaitForLoad();
+				}
+
+				PostRequest.onload = function () {
+					FormCount --;
+					document.body.style.cursor = 'default';
+
+					if(PostRequest.responseText.split("!")[0] == "No Device Found") {
+						alert(PostRequest.responseText);
+						window.location.reload();
+					} else {
+						if(PostRequest.responseText.split("#")[0] == "Failed") {
+							alert(PostRequest.responseText.split("#")[1]);
+							return false;
+						}
+
+						document.getElementById(id).value = PostRequest.responseText;
+					}
+				}
+				return false;
+			}
+
+			/* Parses the Backend response with seperator "SplitType" and fills it into the Classmembers respectively */	
+			function ResponseFillMultiple(form,ClassName,ResIndex,SplitType) {
+				var IdCnt;
+				var ClassMembers = document.getElementsByClassName(ClassName);
+				var PostRequest = new XMLHttpRequest();
+
+				FormCount ++;
+				if(flag) {
+					document.body.style.cursor = 'wait';
+					document.getElementById("overlayLoad").style.display = "block";
+					waitfor = 300;
+					WaitForLoad();
+				}
+
+				PostRequest.open(form.method, form.action, true);
+				PostRequest.send(new FormData(form));
+				PostRequest.onload = function () {
+					FormCount --;
+					document.body.style.cursor = 'default';
+
+					if(PostRequest.responseText.split("!")[0] == "No Device Found") {
+						alert(PostRequest.responseText);
+						window.location.reload();
+					} else {
+						if(PostRequest.responseText.split("#")[0] == "Failed") {
+							alert(PostRequest.responseText.split("#")[1]);
+							return false;
+						}
+						for(IdCnt = 0; IdCnt < ClassMembers.length; IdCnt++) {
+							ClassMembers[IdCnt].value = PostRequest.responseText.split(SplitType)[IdCnt+ResIndex];
+						}
+					}
+					if(ClassName == "InRateLimitCfg") {
+						document.getElementById('InRateLimitType').onchange();
+						document.getElementById('InRateConfig').onchange();
+					}
+					if(ClassName == "EgRateLimitCfg")
+						document.getElementById('EgRateConfig').onchange();
+				}
+				return false;
+			}
+
+			/* Clear Cookie */
+			function Logout() {
+				document.cookie = "UserName=;";
+				window.location.reload();
+			}
+
+			/* Populate Main Menu */
+			function PopulateMainMenu(form,formId) {
+				var PostRequest = new XMLHttpRequest();
+
+				PostRequest.onload = function () {
+					if(PostRequest.responseText.split(":")[0] == "Success") {
+						document.getElementById("MainMenu").style.visibility = "visible";
+						document.getElementById(formId).style.display="none";
+						document.cookie = "UserName="+document.getElementById("UserName").value;
+						document.getElementById("DevInfo").innerHTML += '<br><button style="float:right" id=Logout onclick="return Logout()">Logout</button><br><br>';
+						document.getElementById("dflt1").click();
+						document.getElementById("dflt2").click();
+						PopulateDynamicPages();
+						//document.getElementById("dflt3").click();
+					} else {
+						alert(PostRequest.responseText.split(":")[0]);
+					}
+				}
+				PostRequest.open(form.method, form.action, true);
+				PostRequest.send(new FormData(form));
+				return false;
+			}
+
+			/* Horizontal Tab Properties */
+			function OpenSubMenu(Evt, Menu) {
+				var i, tabcontent, tablinks,sub_tabcontent,v_tabcontent;
+				tabcontent = document.getElementsByClassName("htabcontent");
+				for (i = 0; i < tabcontent.length; i++) {
+					tabcontent[i].style.display = "none";
+				}
+
+				tablinks = document.getElementsByClassName("tablinks");
+				for (i = 0; i < tablinks.length; i++) {
+					tablinks[i].className = tablinks[i].className.replace(" active", "");
+				}
+
+				document.getElementById(Menu).style.display = "block";
+				Evt.currentTarget.className += " active";
+
+				sub_tabcontent = document.getElementsByClassName("sub-tabcontent");
+				for (i = 0; i < sub_tabcontent.length; i++) {
+					sub_tabcontent[i].style.display = "none";
+				}
+				v_tabcontent = document.getElementsByClassName("vtabcontent");
+				for (i = 0; i < v_tabcontent.length; i++) {
+					v_tabcontent[i].style.display = "none";
+				}
+				document.getElementById(Menu).getElementsByTagName("*")[0].click();
+			}
+
+			/* Vertical Tab Properties */
+			function OpenVMenu(Evt, Menu) {
+				var i, tabcontent, tablinks,v_tabcontent;
+
+				tabcontent = document.getElementsByClassName("sub-tabcontent");
+				for (i = 0; i < tabcontent.length; i++) {
+					tabcontent[i].style.display = "none";
+				}
+
+				tablinks = document.getElementsByClassName("sub-tablinks");
+				for (i = 0; i < tablinks.length; i++) {
+					tablinks[i].className = tablinks[i].className.replace(" active", "");
+				}
+
+				v_tabcontent = document.getElementsByClassName("vtabcontent");
+				for (i = 0; i < v_tabcontent.length; i++) {
+					v_tabcontent[i].style.display = "none";
+				}
+				document.getElementById(Menu).style.display = "block";
+				Evt.currentTarget.className += " active";
+				document.getElementById(Menu).getElementsByTagName("*")[0].click();
+			}
+
+			/* Vertical Form Properties */
+			function OpenVForm(Evt, Menu, OnClick, OnSubmit, Id, ClassIdName, ResIndex, SplitType, ActionId) {
+				var i, tabcontent, tablinks;
+
+				tabcontent = document.getElementsByClassName("vtabcontent");
+				for (i = 0; i < tabcontent.length; i++) {
+					tabcontent[i].style.display = "none";
+				}
+
+				tablinks = document.getElementsByClassName("v-tablinks");
+				for (i = 0; i < tablinks.length; i++) {
+					tablinks[i].className = tablinks[i].className.replace(" active", "");
+				}
+
+				document.getElementById(Menu).style.display = "block";
+				Evt.currentTarget.className += " active";
+
+				if(OnClick) {
+					document.getElementById(ActionId).click();
+				}
+				if(OnSubmit) {
+					if(Id) {
+						ResponseFill(document.getElementById(ActionId), ClassIdName);
+					} else {
+						ResponseFillMultiple(document.getElementById(ActionId), ClassIdName, ResIndex, SplitType);
+					}
+				}
+			}
+
+			/* Save Configurations */
+			function SaveConfig() {
+				var PostRequest = new XMLHttpRequest();
+
+				PostRequest.open("POST", "/cgi-bin/config.py?CMD=SaveCfg", true);
+				PostRequest.send();
+
+				document.getElementById("overlayExport").style.display = "block";
+				FormCount = 0;
+				waitfor = 12*5; /* 12 * 5 = 5Min */
+				flag = 0;
+
+				PostRequest.onload = function () {
+					if(PostRequest.responseText.split(":")[0] == "Success") {
+						submitFormInput('GVLANCfgForm','VLANCfgHidden','Save','None','ResVlanState','TypeClass',0,':');
+						submitFormInput('GMTUCfgForm','MTUCfgHidden','Save','None','ResMtuSize','TypeId',0,':');
+						submitFormInput('GJUMBOCfgForm','GJUMBOCfgHidden','Save','None','JumboFrameSupport','TypeClass',0,':');
+						submitFormInput('PortCfgForm','PortCfgHidden','Save','None','SetGetPort','TypeClass',0,':');
+						document.getElementById('VlanAction').value = "Save";
+						PopulateVlanTable('VIDCfgFormInner');
+						submitFormInput('PVIDCfgForm','PVIDCfgHidden','Save','None','SetGetPVID','TypeClass',0,':');
+						document.getElementById('ALUAction').value = "Save";
+						PopulateStaticMacTable('StaticMacFormInner');
+						submitFormInput('STPCfgForm','STPCfgHidden','Save','None','STPConfig','TypeClass',0,':');
+						submitFormInput('STPPortCfgForm','STPPortInfo','Save','None','STPPortConfig','TypeClass',0,':');
+						document.getElementById('MrrCfgHidden').value = 'Save';
+						PopulateMirrorMap(document.getElementById("MirrorConfigForm"),false);
+						submitFormInput('QueueConfigForm','QueueCfgHidden','Save','None','QueueCfg','TypeClass',0,':');
+						document.getElementById('QueueMapCfgHidden').value = 'Save';
+						PopulateQoSMap(document.getElementById("QueueMapConfigForm"),false);
+						submitFormInput('InRateLimitCfgForm','InRateLimitCfgHidden','Save','None','InRateLimitCfg','TypeClass',0,':');
+						submitFormInput('EgRateLimitCfgForm','EgRateLimitCfgHidden','Save','None','EgRateLimitCfg','TypeClass',0,':');
+						submitFormInput('ACLRuleCfgForm','ACLRuleCfgHidden','Save','None','ResACLRuleTbl','TypeId',0,':');
+						submitFormInput('IPSettingsForm','IPSettingsCfgHidden','Save','None','IpConfig','TypeClass',0,':');
+						WaitForExport();
+						//alert(PostRequest.responseText.split(":")[1]);
+					}
+					return false;
+				}
+				return false;
+			}
+
+			/* Wait for Load */
+			function WaitForLoad() {
+				if(FormCount && waitfor) {
+					setTimeout(WaitForLoad,1000);
+					waitfor --;
+				} else {
+					document.getElementById("overlayLoad").style.display = "none";
+					if(!waitfor) {
+						waitfor = 0;
+						FormCount = 0;
+						alert("Faild to get/set request! Please try again!");
+					}
+				}
+			}
+			/* Wait for Export */
+			function WaitForExport () {
+				if(FormCount && waitfor) {
+					setTimeout(WaitForExport,5000);
+					waitfor --;
+				} else {
+					flag = 1;
+					document.getElementById("overlayExport").style.display = "none";
+					if (waitfor) {
+						alert("Successfully Exported The Configurations !");
+						alert("Click on Config.txt to download configurations !");
+					} else { 
+						waitfor = 0;
+						FormCount = 0;
+						alert("Failed to Export The Configurations !");
+					}
+				}
+			}
+
+			/* Wait for Import */
+			function WaitForImport () {
+				if(FormCount && waitfor) {
+					setTimeout(WaitForImport,5000);
+					waitfor --;
+				} else {
+					flag = 1;
+					document.getElementById("overlayImport").style.display = "none";
+					document.getElementById('VlanLoad').value = "None";
+					document.getElementById('ALULoad').value = "None";
+					document.getElementById('STPPortLoad').value = 'None';
+					document.getElementById('ACLRuleCfgLoad').value = 'None';
+					if (waitfor) {
+						alert("Successfully Imported The Configurations !");
+					} else {
+						waitfor = 0;
+						FormCount = 0;
+						alert("Failed to Imported The Configurations, Please try again !");
+					}
+				}
+			}
+
+			/* Apply Configurations */
+			function ApplyConfig() {
+				var file = document.getElementById('ConfigFile');
+				if(file.value.length == 0){
+					alert("Please select a valid config file!");
+				} else {
+					if(!confirm("Before Configurations Import Please reset Device, press OK to proceed !"))
+						return false;
+					var File = document.getElementById('ConfigFile').files[0];
+					var reader = new FileReader();
+
+					document.getElementById("overlayImport").style.display = "block";
+
+					reader.readAsText(File, "UTF-8");
+
+					FormCount = 0;
+					waitfor = 12*5; /* 12 * 5 = 5Min */
+					flag = 0;
+					reader.onload = function() {
+						var lines = reader.result.split('\n');
+						//console.log(lines.length);
+						for(var index=0; index < lines.length-1; index++) {
+							//console.log(lines[index]);
+							switch(lines[index].split("#")[0]) {
+								case "GVLAN":
+									var ClassMembers = document.getElementsByClassName('ResVlanState');
+									
+									ClassMembers[0].value = lines[index].split("#")[1];
+									submitFormInput('GVLANCfgForm','VLANCfgHidden','Set','None','ResVlanState','TypeClass',0,':');
+									break;
+								case "GMTU":
+									var Element = document.getElementById('ResMtuSize');
+									
+									ResMtuSize.value = lines[index].split("#")[1];
+									submitFormInput('GMTUCfgForm','MTUCfgHidden','Set','None','ResMtuSize','TypeId',0,':');
+									break;
+								case "GJUMBO":
+									var ClassMembers = document.getElementsByClassName('JumboFrameSupport');
+									
+									ClassMembers[0].value = lines[index].split("#")[1];
+									submitFormInput('GJUMBOCfgForm','GJUMBOCfgHidden','Set','None','JumboFrameSupport','TypeClass',0,':');
+									break;
+								case "PORTCFG":
+									var ClassMembers = document.getElementsByClassName('SetGetPort');
+									var PortSelect;
+									for(var IdCnt = 0; IdCnt < ClassMembers.length; IdCnt++) {
+										ClassMembers[IdCnt].value = lines[index].split("#")[1].split(":")[IdCnt];
+									}
+									for (var port=1; port <= PhyPorts; port++) {
+										PortSelect = document.getElementById('PhyPort'+port);
+										PortSelect.click();
+										submitFormInput('PortCfgForm','PortCfgHidden','Set','None','SetGetPort','TypeClass',0,':');
+									}
+									break;
+								case "VLANCFG":
+									var vids = parseInt(lines[index].split("#")[1].split(":")[0]);
+									var PMemberInfo,ResIndex,vid;
+
+									document.getElementById('VlanLoad').value = 'Save';
+									for(vid = 1,ResIndex = 2; vid <= vids;vid++,ResIndex+=3) {
+										document.getElementById('vid').value = lines[index].split("#")[1].split(":")[ResIndex];
+										document.getElementById('fid').value = lines[index].split("#")[1].split(":")[ResIndex+1];
+										PMemberInfo = lines[index].split("#")[1].split(":")[ResIndex+2];
+										for(var PIndex=0; PIndex < DevPort; PIndex++) {
+											document.getElementById('VP'+(PIndex+1)).value = PMemberInfo.split("-")[PIndex];
+										}
+										VlanCfg('Add');
+									}
+									break;
+								case "PVIDCFG":
+									var ClassMembers = document.getElementsByClassName('SetGetPVID');
+									var PortSelect;
+									for(var IdCnt = 0; IdCnt < ClassMembers.length; IdCnt++) {
+										ClassMembers[IdCnt].value = lines[index].split("#")[1].split(":")[IdCnt];
+									}
+									for (var port=1; port <= DevPort; port++) {
+										PortSelect = document.getElementById('PVIDPort'+port);
+										PortSelect.click();
+										submitFormInput('PVIDCfgForm','PVIDCfgHidden','Set','None','SetGetPVID','TypeClass',0,':');
+									}
+									break;
+								case "STATICMACCFG":
+									var alus = parseInt(lines[index].split("#")[1].split("*")[0]);
+									var PMemberInfo,ResIndex,alu;
+									var AluIndex;
+
+									document.getElementById('ALULoad').value = 'Save';
+									for(alu = 1,ResIndex = 1; alu  <= alus;alu++,ResIndex+=3) {
+										document.getElementById('ALUIndex').value = lines[index].split("#")[1].split("*")[ResIndex];
+										document.getElementById('ALUMACAddr').value = lines[index].split("#")[1].split("*")[ResIndex+1];
+										PMemberInfo = lines[index].split("#")[1].split("*")[ResIndex+2];
+										for(var PIndex=0; PIndex < DevPort; PIndex++) {
+											document.getElementById('ALUP'+(PIndex+1)).value = PMemberInfo.split("-")[PIndex];
+											val = PMemberInfo.split("-")[PIndex];
+										}
+										ALUCfg('Add');
+									}
+									break;
+								case "STPCFG":
+									var ClassMembers = document.getElementsByClassName('STPConfig');
+									for(var IdCnt = 0; IdCnt < ClassMembers.length; IdCnt++) {
+										ClassMembers[IdCnt].value = lines[index].split("#")[1].split(":")[IdCnt];
+									}
+									submitFormInput('STPCfgForm','STPCfgHidden','Set','None','STPConfig','TypeClass',0,':');
+									break;
+								case "STPPORTCFG":
+									var ClassMembers = document.getElementsByClassName('STPPortConfig');
+									document.getElementById('STPPortLoad').value = 'Save';
+
+									for(var IdCnt = 0; IdCnt < ClassMembers.length; IdCnt++) {
+										ClassMembers[IdCnt].value = lines[index].split("#")[1].split(":")[IdCnt];
+									}
+									for (var port=1; port < DevPort; port++) {
+										PortSelect = document.getElementById('STPPort'+port);
+										PortSelect.click();
+										submitFormInput('STPPortCfgForm','STPPortInfo','Set','None','STPPortConfig','TypeClass',0,':');
+									}
+									break;
+								case "MIRRORING":
+									document.getElementById('CapPort').value = lines[index].split("#")[1].split(":")[0];
+									document.getElementById('MrrRxSel').value = lines[index].split("#")[1].split(":")[1];
+									document.getElementById('MrrTxSel').value = lines[index].split("#")[1].split(":")[2];
+									document.getElementById('MrrCfgHidden').value = 'Set';
+									document.getElementById('MrrCfgLoadHidden').value = 'LoadCfg';
+									PopulateMirrorMap(document.getElementById("MirrorConfigForm"),false);
+									break;
+								case "QOSQUEUECFG":
+									var ClassMembers = document.getElementsByClassName('QueueCfg');
+									var PortSelect = document.getElementsByName('QueueCfgPort');
+									var res_index = 0;
+
+									for (var port=0; port < PhyPorts; port++) {
+										PortSelect[port].checked = true;
+										for(var IdCnt = 0; IdCnt < ClassMembers.length; IdCnt++,res_index++)
+											ClassMembers[IdCnt].value = lines[index].split("#")[1].split(":")[res_index];
+										submitFormInput('QueueConfigForm','QueueCfgHidden','Set','None','QueueCfg','TypeClass',0,':');
+										//PortSelect.click();
+									}
+									break;
+								case "QOSMAPCFG":
+									var ClassMembers = document.getElementsByClassName('QueueMapCfg');
+
+									document.getElementById('QueueMapCfgHidden').value = 'Set';
+									document.getElementById('p8021').value = lines[index].split("#")[1].split(":")[0];
+									document.getElementById('diffserv').value = lines[index].split("#")[1].split(":")[1];
+
+									for(var IdCnt = 0; IdCnt < ClassMembers.length; IdCnt++)
+										ClassMembers[IdCnt].value = lines[index].split("#")[1].split(":")[IdCnt+2];
+									PopulateQoSMap(document.getElementById("QueueMapConfigForm"),false);
+									break;
+								case "INGRESSRATECFG":
+									var ClassMembers = document.getElementsByClassName('InRateCfg');
+									var PortSelect = document.getElementsByName('InRateLimitPort');
+									var InRateState = document.getElementById('InRateConfig');
+									var res_index = 0;
+
+									for (var port=0; port < PhyPorts; port++) {
+										PortSelect[port].checked = true;
+										InRateState.value = lines[index].split("#")[1].split(":")[res_index++];
+										for(var IdCnt = 0; IdCnt < ClassMembers.length; IdCnt++,res_index++)
+											ClassMembers[IdCnt].value = lines[index].split("#")[1].split(":")[res_index];
+										//PortSelect.click();
+										submitFormInput('InRateLimitCfgForm','InRateLimitCfgHidden','Set','None','InRateLimitCfg','TypeClass',0,':');
+									}
+									break;
+								case "EGRESSRATECFG":
+									var ClassMembers = document.getElementsByClassName('EgRateCfg');
+									var PortSelect = document.getElementsByName('EgRateLimitPort');
+									var EgRateState = document.getElementById('EgRateConfig');
+									var res_index = 0;
+
+									for (var port=0; port < PhyPorts; port++) {
+										PortSelect[port].checked = true;
+										EgRateState.value = lines[index].split("#")[1].split(":")[res_index++];
+										for(var IdCnt = 0; IdCnt < ClassMembers.length; IdCnt++,res_index++)
+											ClassMembers[IdCnt].value = lines[index].split("#")[1].split(":")[res_index];
+										//PortSelect.click();
+										submitFormInput('EgRateLimitCfgForm','EgRateLimitCfgHidden','Set','None','EgRateLimitCfg','TypeClass',0,':');
+									}
+									break;
+								case "ACLCFG":
+									var PortSelect = document.getElementsByName('ACLRulePort');
+									var L2 = document.getElementsByClassName('L2');
+									var L3 = document.getElementsByClassName('L3');
+									var L4 = document.getElementsByClassName('L4');
+									var RuleType = document.getElementsByName('ACLRuleType');
+									var AclEnable = document.getElementById('ACLEnable');
+									var AclIndex = document.getElementById('ACLRuleCfgIndex');
+									var acl, acl_info;
+
+									for (var port=0; port < PhyPorts; port++) {
+										acl = lines[index].split("#")[1].split("-")[port];
+										if(acl.split("*")[0] == "NA")
+											continue;
+										acl_info = acl.split("=");
+										for(var cnt=0; cnt < acl_info.length-1; cnt++) {
+											if(acl_info[cnt].split("*")[1] == "1") {
+												RuleType[0].checked = true;
+												RuleType[0].onchange();
+												AclEnable.value = acl_info[cnt].split("*")[0];
+												AclIndex.value = acl_info[cnt].split("*")[2];
+												for(var IdCnt = 0; IdCnt < L2.length; IdCnt++)
+													L2[IdCnt].value = acl_info[cnt].split("*")[IdCnt+3];
+											}
+											if(acl_info[cnt].split("*")[1] == "2") {
+												RuleType[1].checked = true;
+												RuleType[1].onchange();
+												AclEnable.value = acl_info[cnt].split("*")[0];
+												AclIndex.value = acl_info[cnt].split("*")[2];
+												for(var IdCnt = 0; IdCnt < L3.length; IdCnt++)
+													L3[IdCnt].value = acl_info[cnt].split("*")[IdCnt+3];
+											}
+											if(acl_info[cnt].split("*")[1] == "3") {
+												RuleType[2].checked = true;
+												RuleType[2].onchange();
+												AclEnable.value = acl_info[cnt].split("*")[0];
+												AclIndex.value = acl_info[cnt].split("*")[2];
+												for(var IdCnt = 0; IdCnt < L4.length; IdCnt++)
+													L4[IdCnt].value = acl_info[cnt].split("*")[IdCnt+3];
+											}
+											PortSelect[port].checked = true;
+											document.getElementById('ACLRuleCfgLoad').value = 'Load';
+											submitFormInput('ACLRuleCfgForm','ACLRuleCfgHidden','Add','None','ResACLRuleTbl','TypeId',0,':');
+										}
+									}
+									break;
+								case "IPSETTINGS":
+									var ClassMembers = document.getElementsByClassName('IpConfig');
+									var IPTypeSelect = document.getElementsByName('IpSetType');
+									var IPType = lines[index].split("#")[1].split(":")[0];
+
+									if(IPType == "dhcp") {
+										IPTypeSelect[0].checked = true;
+									} else {
+										IPTypeSelect[1].checked = true;
+										DisableClassId('IpConfig',false,'TypeClass',false,' ',0);
+									}
+
+									for(var IdCnt = 0; IdCnt < ClassMembers.length; IdCnt++) {
+										ClassMembers[IdCnt].value = lines[index].split("#")[1].split(":")[IdCnt+1];
+									}
+
+									submitFormInput('IPSettingsForm','IPSettingsCfgHidden','Set','None','IpConfig','TypeClass',0,':');
+									break;
+								default:
+									alert("Corrupted Configurations found, Please provide valid Configuration File !");
+									FormCount = 0;
+									waitfor = 0;
+									flag = 1;
+									WaitForImport();
+									return false;
+							}
+						}
+						WaitForImport();
+					}
+				}
+				return false;
+			}
+		</script>
+
+	</body>
+</html> 
+
